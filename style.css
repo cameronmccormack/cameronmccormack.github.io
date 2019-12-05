@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Quicksand);
+@import url(http://fonts.googleapis.com/css?family=Raleway);
 @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css);
 
 /* 
@@ -65,7 +65,7 @@ html, body {
 .container-home h1 {
   /* Style */
   text-align: center;
-  font-family:"Quicksand";
+  font-family:"Raleway";
   font-size: 8vw;
   font-variant: normal;
   font-weight: 300;
@@ -81,7 +81,7 @@ html, body {
 .container-home h2 {
   /* Style */
   text-align: center;
-  font-family:"Quicksand";
+  font-family:"Raleway";
   font-size: 3vw;
   font-variant: normal;
   font-weight: 300;
@@ -98,7 +98,7 @@ html, body {
 .container-home h3 {
   /* Style */
   text-align: center;
-  font-family:"Quicksand";
+  font-family:"Raleway";
   font-size: 3vw;
   font-variant: normal;
   font-weight: 300;
@@ -126,7 +126,7 @@ html, body {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-family: "Quicksand";
+  font-family: "Raleway";
   font-size: 2vw;
 }
 .button-home:hover {
@@ -166,7 +166,7 @@ html, body {
 }
 .footer-home p {
   text-align: left;
-  font-family:"Quicksand";
+  font-family:"Raleway";
   font-size: 1.5vw;
   font-variant: normal;
   font-weight: 100;
@@ -224,7 +224,7 @@ html, body {
 .header h1 {
   /* Style */
   text-align: center;
-  font-family:"Quicksand";
+  font-family:"Raleway";
   font-size: 40px;
   font-variant: normal;
   font-weight: 350;
@@ -240,7 +240,7 @@ html, body {
 .header h2 {
   /* Style */
   text-align: center;
-  font-family:"Quicksand";
+  font-family:"Raleway";
   font-size: 20px;
   font-variant: normal;
   font-weight: 50;
@@ -264,7 +264,7 @@ html, body {
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-family: "Quicksand";
+  font-family: "Raleway";
   font-size: 20px;
   width: 100px;
 }
@@ -298,7 +298,7 @@ html, body {
 }
 .section1 h1 {
   text-align: left;
-  font-family: "Quicksand";
+  font-family: "Raleway";
   font-size: 40px;
   font-variant: normal;
   font-weight: 350px;
@@ -307,7 +307,7 @@ html, body {
 }
 .section1 p {
   text-align: justify;
-  font-family:"Quicksand";
+  font-family:"Raleway";
   font-size: 20px;
   font-variant: normal;
   font-weight: 50;
