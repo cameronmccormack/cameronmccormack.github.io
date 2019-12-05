@@ -1,0 +1,313 @@
+@import url(http://fonts.googleapis.com/css?family=Raleway);
+@import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css);
+
+/* 
+  This .css file is for screensize > 750px width. A similar file, style-mobile.css, exists
+  for screen sizes greater than 750 px.
+ */
+
+/***********
+ * GENERAL *
+ ***********/
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+/*************
+ * HOME PAGE *
+ *************/
+
+/* Containers */ 
+.container {
+  width: 100%;
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  background: black;
+}
+.container-buttons {
+  text-align: center;
+  position: absolute;
+  top: 75%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+.container-socials {
+  text-align: center;
+  position: absolute;
+  top: 90%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Image and Video Formatting */
+.img-home {
+  margin: 0;
+  width: 100%;
+  vertical-align: middle;
+}
+.iframe-home-box {
+  float: left;
+  margin: 0;
+  width: 50%;
+}
+.iframe-home {
+  width: 50vw;
+  height: 28.125vw;
+  vertical-align: middle;
+  border: none;
+}
+
+/* Text Style and Positioning */
+.container-home h1 {
+  /* Style */
+  text-align: center;
+  font-family:"Raleway";
+  font-size: 15vw;
+  font-variant: normal;
+  font-weight: 700;
+  color: #E2E2E2;
+  /* Position */
+  margin: 0;
+  position: absolute;
+  top: 28%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+.container-home h2 {
+  /* Style */
+  text-align: center;
+  font-family:"Raleway";
+  font-size: 5vw;
+  font-variant: normal;
+  font-weight: 300;
+  color: #E2E2E2;
+  /* Position */
+  margin: 0;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  margin-right: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
+.container-home h3 {
+  /* Style */
+  text-align: center;
+  font-family:"Raleway";
+  font-size: 4vw;
+  font-variant: normal;
+  font-weight: 100;
+  color: #E2E2E2;
+  /* Position */
+  margin: 0;
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  margin-right: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
+
+/* Buttons */
+.button-home {
+  /* Button margin */
+  margin: 0.5vw;
+  /* Button style */
+  background-color: transparent;
+  border: 0.5vw solid #E2E2E2;
+  border-radius: 1.5vw;
+  color: #E2E2E2;
+  padding: 2vw 4vw;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-family: "Raleway";
+  font-size: 3vw;
+}
+.button-home:hover {
+  -webkit-transition-duration: 0.4s; /* For safari */
+  transition-duration: 0.4s;
+  background-color: #E2E2E2;
+  color: black;
+}
+
+/* Social Media Buttons */
+.fa-home {
+  padding: 1.5vw 1vw;
+  font-size: 3vw;
+  width: 4vw;
+  border: 0.5vw solid #E2E2E2;  
+  border-radius: 50%;
+  text-align: center;
+  text-decoration: none;
+  color: #E2E2E2;
+}
+.fa-home:hover {
+  -webkit-transition-duration: 0.4s; /* For safari */
+  transition-duration: 0.4s;
+  background-color: #E2E2E2;
+  color: black;
+}
+
+/* Footer */
+.footer-home {
+  width: 100%;
+  position: relative;
+  margin: 0;
+  background-color: black;
+}
+.footer-home p {
+  text-align: left;
+  font-family:"Raleway";
+  font-size: 1.5vw;
+  font-variant: normal;
+  font-weight: 100;
+  color: #E2E2E2;
+  margin: 0;
+}
+
+/*************
+ * MAIN PAGE *
+ *************/
+
+/* Containers */
+.container-main {
+  width: 100%;
+  min-width: 700px;
+  max-width: 1080px;
+  margin: 0 auto;
+  background-color: white;
+}
+.container-buttons-header {
+  text-align: right;
+  position: absolute;
+  right: 10px;
+  bottom: 5px;
+}
+.container-socials-header {
+  text-align: center;
+  position: absolute;
+  right: 10px;
+  bottom: 32px;
+}
+
+/* Header Container */
+.header {
+  position: -webkit-sticky; /* For safari */
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: #5E5E5E;
+  height: 65px;
+  z-index: 1000;
+  min-width: 700px;
+  max-width: 1080px;
+}
+.background-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: #5E5E5E;
+  height: 65px;
+  z-index: 999;
+}
+
+/* Header Text */
+.header h1 {
+  /* Style */
+  text-align: center;
+  font-family:"Raleway";
+  font-size: 40px;
+  font-variant: normal;
+  font-weight: 350;
+  color: #E2E2E2;
+  /* Position */
+  margin: 0;
+  position: absolute;
+  top: 40px;
+  left: 110px;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+.header h2 {
+  /* Style */
+  text-align: center;
+  font-family:"Raleway";
+  font-size: 20px;
+  font-variant: normal;
+  font-weight: 50;
+  color: #E2E2E2;
+  /* Position */
+  margin: 0;
+  position: absolute;
+  top: 15px;
+  left: 110px;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);	
+}
+
+/* Header Section Buttons */
+.button-header {
+  /* Button size */
+  height: 20px;
+  /* Button style */
+  background-color: transparent;
+  color: #E2E2E2;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-family: "Raleway";
+  font-size: 20px;
+  width: 100px;
+}
+.button-header:hover {
+  -webkit-transition-duration: 0.4s; /* For safari */
+  transition-duration: 0.4s;
+  font-size: 24px;
+}
+
+/* Header Social Media Buttons */
+.fa-head {
+  padding: 4px;
+  font-size: 18px;
+  width: 24px;
+  text-align: center;
+  text-decoration: none;
+  color: #E2E2E2;
+  border: 0;
+}
+.fa-head:hover {
+  -webkit-transition-duration: 0.4s; /* For safari */
+  transition-duration: 0.4s;
+  font-size: 24px;
+}
+
+/* First Section: XXX */
+.section1 {
+  width: 100%;
+  margin: 0;
+  background: white;
+}
+.section1 h1 {
+  text-align: left;
+  font-family: "Raleway";
+  font-size: 40px;
+  font-variant: normal;
+  font-weight: 350px;
+  color: #5E5E5E;
+  margin: 15px;
+}
+.section1 p {
+  text-align: justify;
+  font-family:"Raleway";
+  font-size: 20px;
+  font-variant: normal;
+  font-weight: 50;
+  color: #5E5E5E;
+  margin: 15px;
+}
