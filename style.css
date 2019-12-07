@@ -30,6 +30,14 @@ html, body {
   height: 100vh;
   min-height: 50vh;
 }
+.container-title {
+  text-align: center;
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
 .container-options {
   text-align: center;
   position: absolute;
@@ -65,7 +73,7 @@ html, body {
 }
 
 /* Text Style and Positioning */
-.container-home h1 {
+.container-title h1 {
   /* Style */
   text-align: center;
   font-family:"Quicksand";
@@ -75,11 +83,7 @@ html, body {
   color: #E2E2E2;
   /* Position */
   margin: 0;
-  position: absolute;
-  top: 13%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%);
+  position: relative;
 }
 .container-home h2 {
   /* Style */
@@ -90,13 +94,8 @@ html, body {
   font-weight: 300;
   color: #E2E2E2;
   /* Position */
-  margin: 0;
-  position: absolute;
-  top: 25%;
-  left: 50%;
-  margin-right: 50%;
-  transform: translate(-50%, -50%);
-  white-space: nowrap;
+  margin: 3vw;
+  position: relative;
 }
 .container-home h3 {
   /* Style */
@@ -107,13 +106,8 @@ html, body {
   font-weight: 300;
   color: #E2E2E2;
   /* Position */
-  margin: 0;
-  position: absolute;
-  top: 4%;
-  left: 50%;
-  margin-right: 50%;
-  transform: translate(-50%, -50%);
-  white-space: nowrap;
+  margin: 0vw;
+  position: relative;
 }
 
 /* Buttons */
