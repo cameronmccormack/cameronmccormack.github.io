@@ -128,7 +128,9 @@ html, body {
   border: 0.25vw solid #E2E2E2;
   border-radius: 1vw;
   color: #E2E2E2;
-  padding: 1vw 2vw;
+  /*padding: 1vw 2vw;*/
+  height: 5vw;
+  width: 14vw;
   text-align: center;
   text-decoration: none;
   display: inline-block;
