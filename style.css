@@ -29,14 +29,12 @@ html, body {
 .container-home {
   height: 100vh;
   min-height: 50vh;
+  background: background.jpg;
 }
 .container-title {
-  text-align: center;
-  position: absolute;
-  top: 20%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%);
+  position: relative;
+  width: 100%;
+  margin-top: 5vh;
 }
 .container-options {
   text-align: center;
