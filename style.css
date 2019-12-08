@@ -29,7 +29,6 @@ html, body {
 .container-home {
   height: 100vh;
   min-height: 50vh;
-  background: background.jpg;
 }
 .container-title {
   position: relative;
@@ -52,6 +51,7 @@ html, body {
 
 /* Image and Video Formatting */
 .img-home {
+  position: absolute;
   margin: 0;
   width: 100%;
   height: 100%;
