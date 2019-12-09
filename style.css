@@ -28,7 +28,8 @@ html, body {
 }
 .container-home {
   height: 100vh;
-  min-height: 50vh;
+  min-height: 50vw;
+  min-width: 75vh;
 }
 .container-title {
   position: relative;
