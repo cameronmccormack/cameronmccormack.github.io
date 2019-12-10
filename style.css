@@ -139,7 +139,7 @@ html, body {
   margin: calc(0.25vw + 0.25vh);
   /* Button Style */
   padding: calc(0.5vw + 0.5vh) calc(0.333vw + 0.333vh);
-  font-size: (1vw + 1vh);
+  font-size: calc(1vw + 1vh);
   width: calc(1.333vw + 1.333vh);
   border: calc(0.15vw + 0.15vh) solid #E2E2E2;  
   border-radius: 50%;
