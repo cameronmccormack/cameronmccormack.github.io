@@ -47,7 +47,7 @@ html, body {
 .container-buttons {
   text-align: center;
   position: relative;
-  margin: 5vw;
+  margin: calc(2.5vw + 2.5vh);
 }
 
 /* Image and Video Formatting */
