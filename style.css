@@ -76,7 +76,7 @@ html, body {
   /* Style */
   text-align: center;
   font-family:"Quicksand";
-  font-size: calc(6vw+ 3vh);
+  font-size: calc(4vw+ 4vh);
   font-variant: normal;
   font-weight: 300;
   color: #E2E2E2;
@@ -88,7 +88,7 @@ html, body {
   /* Style */
   text-align: center;
   font-family:"Quicksand";
-  font-size: calc(2vw + 1vh);
+  font-size: calc(1.5vw + 1.5vh);
   font-variant: normal;
   font-weight: 300;
   color: #E2E2E2;
@@ -100,7 +100,7 @@ html, body {
   /* Style */
   text-align: center;
   font-family:"Quicksand";
-  font-size: calc(2vw + 1vh);
+  font-size: calc(1.5vw + 1.5vh);
   font-variant: normal;
   font-weight: 300;
   color: #E2E2E2;
