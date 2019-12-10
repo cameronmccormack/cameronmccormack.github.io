@@ -188,6 +188,38 @@ html, body {
   }
 }
 
+/* Stop page elements shrinking once width goes below min-width. */
+@media only screen and (max-width: 75vh) {
+  .container-home h1 {
+    font-size: 7vh
+  }
+  .container-home h2 {
+    font-size: 2.625vh;
+	margin: 2.25vh;
+  }
+  .container-home h3 {
+    font-size: 2.625vh;
+  }
+  .container-buttons {
+    margin: 4.375vh;
+  }
+  .button-home {
+    margin: 0.4375vh;
+	border: 0.2625vh solid #E2E2E2;
+	border-radius: 0.875vh;
+	width: 12.25vh;
+	padding: 1.3125vh 0;
+	font-size: 1.75vh;
+  }
+  .fa-home {
+    margin: 0.4375vh;
+	padding: 0.875vh 0.58333vh;
+	font-size: 1.75vh;
+	width: 2.333vh;
+	border: 0.2625vh solid #E2E2E2;
+  }
+}
+
 /* Footer */
 .footer-home {
   width: 100%;
