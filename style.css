@@ -42,7 +42,7 @@ html, body {
   top: 72%;
   left: 50%;
   margin-right: -50%;
-  transform: translate(-50%, -50%)
+  transform: translate(-50%, -50%);
 }
 .container-buttons {
   text-align: center;
