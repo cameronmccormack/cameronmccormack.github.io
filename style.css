@@ -112,19 +112,19 @@ html, body {
 /* Buttons */
 .button-home {
   /* Button margin */
-  margin: calc(0.25vw + 0.25vh);
+  margin: calc(0.5vw + 0.5vh);
   /* Button style */
   background-color: transparent;
-  border: calc(0.15vw + 0.15vh) solid #E2E2E2;
-  border-radius: calc(0.5vw + 0.5vh);
+  border: calc(0.3vw + 0.3vh) solid #E2E2E2;
+  border-radius: calc(1vw + 1vh);
   color: #E2E2E2;
-  width: calc(7vw + 7vh);
-  padding: calc(0.75vw + 0.75vh) 0;
+  width: calc(10vw + 10vh);
+  padding: calc(1vw + 1vh) 0;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-family: "Quicksand";
-  font-size: calc(1vw + 1vh);
+  font-size: calc(1.5vw + 1.5vh);
 }
 .button-home:hover {
   -webkit-transition-duration: 0.4s; /* For safari */
@@ -173,18 +173,18 @@ html, body {
   }
   .button-home {
     margin: 0.375vw;
-	border: 0.225vw solid #E2E2E2;
-	border-radius: 0.75vw;
-	width: 10.5vw;
-	padding: 1.125vw 0;
-	font-size: 1.5vw;
+    border: 0.225vw solid #E2E2E2;
+    border-radius: 0.75vw;
+    width: 10.5vw;
+    padding: 1.125vw 0;
+    font-size: 1.5vw;
   }
   .fa-home {
     margin: 0.375vw;
-	padding: 0.75vw 0.5vw;
-	font-size: 1.5vw;
-	width: 2vw;
-	border: 0.225vw solid #E2E2E2;
+    padding: 0.75vw 0.5vw;
+    font-size: 1.5vw;
+    width: 2vw;
+    border: 0.225vw solid #E2E2E2;
   }
 }
 
@@ -195,7 +195,7 @@ html, body {
   }
   .container-home h2 {
     font-size: 2.625vh;
-	margin: 2.25vh;
+    margin: 2.25vh;
   }
   .container-home h3 {
     font-size: 2.625vh;
@@ -205,18 +205,18 @@ html, body {
   }
   .button-home {
     margin: 0.4375vh;
-	border: 0.2625vh solid #E2E2E2;
-	border-radius: 0.875vh;
-	width: 12.25vh;
-	padding: 1.3125vh 0;
-	font-size: 1.75vh;
+    border: 0.2625vh solid #E2E2E2;
+    border-radius: 0.875vh;
+    width: 12.25vh;
+    padding: 1.3125vh 0;
+    font-size: 1.75vh;
   }
   .fa-home {
     margin: 0.4375vh;
-	padding: 0.875vh 0.58333vh;
-	font-size: 1.75vh;
-	width: 2.333vh;
-	border: 0.2625vh solid #E2E2E2;
+    padding: 0.875vh 0.58333vh;
+    font-size: 1.75vh;
+    width: 2.333vh;
+    border: 0.2625vh solid #E2E2E2;
   }
 }
 
