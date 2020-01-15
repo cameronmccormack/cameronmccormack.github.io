@@ -244,10 +244,14 @@ html, body {
 /* Containers */
 .container-main {
   width: 100%;
+  background-color: white;
+  margin: 0;
+}
+.narrow-text {
+  width: 100%;
   min-width: 700px;
   max-width: 1080px;
   margin: 0 auto;
-  background-color: white;
 }
 .container-buttons-header {
   text-align: right;
@@ -264,23 +268,25 @@ html, body {
 
 /* Header Container */
 .header {
-  position: -webkit-sticky; /* For safari */
-  position: sticky;
-  top: 0;
+  position: fixed;
   width: 100%;
+  min-width: 700px;
+  max-width: 1080px;
   background: #5E5E5E;
   height: 65px;
   z-index: 1000;
-  min-width: 700px;
-  max-width: 1080px;
 }
-.background-header {
+.header-background {
   position: fixed;
   top: 0;
   width: 100%;
+  text-align: center;
   background: #5E5E5E;
   height: 65px;
   z-index: 999;
+}
+.header-spacing {
+  height: 65px;
 }
 
 /* Header Text */
@@ -351,6 +357,15 @@ html, body {
   -webkit-transition-duration: 0.4s; /* For safari */
   transition-duration: 0.4s;
   font-size: 24px;
+}
+
+/* Section Title Banner */
+.banner {
+  width: 100%; 
+  height: 33vh;
+  object-fit: cover;
+}
+.banner-title {
 }
 
 /* First Section: XXX */
