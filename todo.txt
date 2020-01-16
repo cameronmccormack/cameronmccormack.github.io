@@ -1,3 +1,13 @@
-stop homepage content overlapping
+INDEX:
 
-minimum aspect ratio of 50% for homepage image
+- update placeholder image files
+
+MAIN:
+
+- sort header out so that links snap to top of banner rather than top hidden under header
+- make page width proper 100% rather than small horizontal scroll always present
+- ensure banners stretch properly when page is very narrow
+- stop multi line text for bookings/contact
+- stop header buttons moving when hovered
+- add section content
+- update placeholder image files
