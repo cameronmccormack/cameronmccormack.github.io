@@ -11,3 +11,4 @@ MAIN:
 - stop header buttons moving when hovered
 - add section content
 - update placeholder image files
+- make text in footer go off screen when screen goes beyond narrow limit
