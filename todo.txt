@@ -8,5 +8,6 @@ MAIN:
 - ensure banners stretch properly when page is very narrow
 - stop multi line text for bookings/contact
 - stop header buttons moving when hovered
-- add section content
+- add section content for 3, 4, 5
+- better resizing of section content for 1 and 2 when narrow
 - update placeholder image files
