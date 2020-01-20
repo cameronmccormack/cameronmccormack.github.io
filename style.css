@@ -265,11 +265,6 @@ html, body {
   right: 10px;
   bottom: 32px;
 }
-.multi-box {
-  display: flex;
-  justify-content: space-between;
-  margin: 15px;
-}
 
 /* Header Container */
 .header {
@@ -395,21 +390,27 @@ html, body {
 }
 
 /* First Section: Biography */
-.section1 {
-  width: 100%;
+.section1-text {
   margin: 0;
-  background: white;
+  float: left;
+  width: 412px;
 }
-.section1-img {
-  width: 32%;
-}
-.section1 p {
+.section1-text p {
   text-align: justify;
   font-family:"Quicksand";
   font-size: 20px;
   font-variant: normal;
   font-weight: 50;
   color: #5E5E5E;
+  margin: 15px;
+}
+.section1-imgbox {
+  width: 668px;
+  float: right;
+}
+.section1-img {
+  width: 300px;
+  height: 300px;
   margin: 15px;
 }
 
