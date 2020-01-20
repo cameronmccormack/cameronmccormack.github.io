@@ -4,7 +4,6 @@ INDEX:
 
 MAIN:
 
-- sort header out so that links snap to top of banner rather than top hidden under header
 - ensure banners stretch properly when page is very narrow
 - stop multi line text for bookings/contact
 - stop header buttons moving when hovered
