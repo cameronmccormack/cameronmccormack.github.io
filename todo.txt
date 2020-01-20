@@ -5,10 +5,8 @@ INDEX:
 MAIN:
 
 - sort header out so that links snap to top of banner rather than top hidden under header
-- make page width proper 100% rather than small horizontal scroll always present
 - ensure banners stretch properly when page is very narrow
 - stop multi line text for bookings/contact
 - stop header buttons moving when hovered
 - add section content
 - update placeholder image files
-- make text in footer go off screen when screen goes beyond narrow limit
