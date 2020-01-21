@@ -473,7 +473,7 @@ html, body {
   font-variant: normal;
   font-weight: 350px;
   color: #5E5E5E;
-  margin: 15px;
+  margin: 1% 15px;
 }
 .section3 p {
   text-align: justify;
@@ -482,7 +482,7 @@ html, body {
   font-variant: normal;
   font-weight: 50;
   color: #5E5E5E;
-  margin: 15px;
+  margin: 1% 15px;
 }
 
 /* Fourth Section: Setlist */
@@ -490,7 +490,7 @@ html, body {
   float: right;
   width: 47%;
   height: 600px;
-  margin: 15px;
+  margin: 1% 15px;
 }
 .section4-text {
   margin: 0;
@@ -504,7 +504,7 @@ html, body {
   font-variant: normal;
   font-weight: 50;
   color: #5E5E5E;
-  margin: 15px;
+  margin: 1% 15px;
 }
 
 /* Fifth Section: Contact */
