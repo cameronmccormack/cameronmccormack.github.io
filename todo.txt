@@ -4,7 +4,6 @@ INDEX:
 
 MAIN:
 
-- ensure banners stretch properly when page is very narrow
 - stop multi line text for bookings/contact
 - stop header buttons moving when hovered
 - add section content for 3, 5
