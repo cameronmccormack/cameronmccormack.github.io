@@ -486,21 +486,18 @@ html, body {
 }
 
 /* Fourth Section: Setlist */
-.section4 {
-  width: 100%;
-  margin: 0;
-  background: white;
-}
-.section4 h1 {
-  text-align: left;
-  font-family: "Quicksand";
-  font-size: 40px;
-  font-variant: normal;
-  font-weight: 350px;
-  color: #5E5E5E;
+.spotify-playlist {
+  float: right;
+  width: 47%;
+  height: 600px;
   margin: 15px;
 }
-.section4 p {
+.section4-text {
+  margin: 0;
+  width: 47%;
+  float: left;
+}
+.section4-text p {
   text-align: justify;
   font-family:"Quicksand";
   font-size: 20px;
