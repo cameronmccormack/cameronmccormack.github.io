@@ -464,25 +464,24 @@ html, body {
 .section3 {
   width: 100%;
   margin: 0;
-  background: white;
 }
 .section3 h1 {
   text-align: left;
   font-family: "Quicksand";
-  font-size: 40px;
-  font-variant: normal;
-  font-weight: 350px;
+  font-size: 20px;
+  font-variant: italic;
+  font-weight: 100px;
   color: #5E5E5E;
-  margin: 1% 15px;
+  margin: 15px;
 }
 .section3 p {
-  text-align: justify;
+  text-align: left;
   font-family:"Quicksand";
   font-size: 20px;
   font-variant: normal;
   font-weight: 50;
   color: #5E5E5E;
-  margin: 1% 15px;
+  margin: 15px 15px 15px 40px;
 }
 
 /* Fourth Section: Setlist */
@@ -490,11 +489,11 @@ html, body {
   float: right;
   width: 47%;
   height: 600px;
-  margin: 1% 15px;
+  margin: 15px 15px 15px 0;
 }
 .section4-text {
+  width: 50%;
   margin: 0;
-  width: 47%;
   float: left;
 }
 .section4-text p {
@@ -504,7 +503,7 @@ html, body {
   font-variant: normal;
   font-weight: 50;
   color: #5E5E5E;
-  margin: 1% 15px;
+  margin: 15px 15px 15px 15px;
 }
 
 /* Fifth Section: Contact */
