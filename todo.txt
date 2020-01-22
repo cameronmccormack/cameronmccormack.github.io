@@ -4,7 +4,6 @@ INDEX:
 
 MAIN:
 
-- stop multi line text for bookings/contact
 - stop header buttons moving when hovered
 - add section content for 3, 5
 - better resizing of section content for 1, 2 and 4 when narrow (use % of parent for horizonal margins and content width)
