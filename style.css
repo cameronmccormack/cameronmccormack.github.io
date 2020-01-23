@@ -335,12 +335,31 @@ html, body {
   display: inline-block;
   font-family: "Quicksand";
   font-size: 20px;
-  margin: 0 3px;
+  margin: 0;
 }
 .button-header:hover {
   -webkit-transition-duration: 0.4s; /* For safari */
   transition-duration: 0.4s;
   font-size: 24px;
+}
+
+/* Hard code button text widths to stop hover expansion moving buttons. Width is
+ * normal width + 17px. This allows equispaced margins without the longest expanded
+ * button exceeding size. */
+.button-bio {
+  width: 112.77px;
+}
+.button-vids {
+  width: 79.03px;
+}
+.button-faqs {
+  width: 65.41px;  
+}
+.button-set {
+  width: 71.19px;
+}
+.button-contact {
+  width: 101.92px;
 }
 
 /* Header Social Media Buttons */
