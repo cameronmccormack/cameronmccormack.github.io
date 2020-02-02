@@ -416,9 +416,9 @@ html, body {
 
 /* First Section: Biography */
 .section1-text {
-  margin: 0;
   float: left;
-  width: 412px;
+  width: calc(50% - 22.5px);
+  margin: 15px 7.5px 15px 15px;
 }
 .section1-text p {
   text-align: justify;
@@ -427,16 +427,11 @@ html, body {
   font-variant: normal;
   font-weight: 50;
   color: #5E5E5E;
-  margin: 15px;
-}
-.section1-imgbox {
-  width: 668px;
-  float: right;
+  margin: 0;
 }
 .section1-img {
-  width: 300px;
-  height: 300px;
-  margin: 15px;
+  width: calc(50% - 22.5px);
+  margin: 15px 15px 15px 7.5px;
 }
 
 /* Second Section: Videos */
