@@ -552,6 +552,14 @@ html, body {
   color: #5E5E5E;
   margin: 15px;
 }
+.triple-box {
+  width: 100%;
+  text-align: center;
+}
+.triple-img {
+  width: 30%;
+  margin: 1%;
+}
 
 /* Footer */
 .footer-main {
