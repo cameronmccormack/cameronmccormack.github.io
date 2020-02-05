@@ -253,6 +253,15 @@ html, body {
   max-width: 1080px;
   margin: 0 auto;
 }
+.narrow-text p {
+  text-align: justify;
+  font-family:"Quicksand";
+  font-size: 20px;
+  font-variant: normal;
+  font-weight: 50;
+  color: #5E5E5E;
+  margin: 15px;
+}
 .container-buttons-header {
   text-align: right;
   position: absolute;
@@ -264,6 +273,10 @@ html, body {
   position: absolute;
   right: 10px;
   bottom: 32px;
+}
+.photo-row {
+  width: 100%;
+  text-align: center;
 }
 
 /* Header Container */
@@ -427,7 +440,7 @@ html, body {
   font-variant: normal;
   font-weight: 50;
   color: #5E5E5E;
-  margin: 0;
+  margin: 0 0 15px 0;
 }
 .section1-img {
   width: calc(50% - 22.5px);
@@ -508,24 +521,9 @@ html, body {
 
 /* Fourth Section: Setlist */
 .spotify-playlist {
-  float: right;
-  width: 47%;
+  width: calc(100% - 30px);
   height: 600px;
-  margin: 15px 15px 15px 0;
-}
-.section4-text {
-  width: 50%;
-  margin: 0;
-  float: left;
-}
-.section4-text p {
-  text-align: justify;
-  font-family:"Quicksand";
-  font-size: 20px;
-  font-variant: normal;
-  font-weight: 50;
-  color: #5E5E5E;
-  margin: 15px 15px 15px 15px;
+  margin: 15px;
 }
 
 /* Fifth Section: Contact */
@@ -551,10 +549,6 @@ html, body {
   font-weight: 50;
   color: #5E5E5E;
   margin: 15px;
-}
-.triple-box {
-  width: 100%;
-  text-align: center;
 }
 .triple-img {
   width: 30%;
