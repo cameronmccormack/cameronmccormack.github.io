@@ -470,6 +470,7 @@ html, body {
   font-size: 18px;
   font-weight: 50;
   color: #5E5E5E;
+  text-align: center;
 }
 .section1-sub img {
   margin: 0 15px 15px 15px;
@@ -517,6 +518,7 @@ html, body {
   font-weight: 50;
   color: #5E5E5E;
   margin: 10px 0;
+  text-align: center;
 }
 .section2 iframe {
   width: 100%;
