@@ -452,15 +452,16 @@ html, body {
   margin: 15px 15px 15px 7.5px;
 }
 
+/* Reposition picture once width starts to shrink.*/
 @media only screen and (max-width: 1080px) {
   .section1-text {
     float: none;
-    width: 100%;
+    width: calc(100% - 30px);
     margin: 15px;
   }
   .section1-img {
     float: none;
-    width: 100%;
+    width: calc(100% - 30px);
     margin: 0 15px;
   }
 }
