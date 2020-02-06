@@ -451,6 +451,20 @@ html, body {
   width: calc(50% - 22.5px);
   margin: 15px 15px 15px 7.5px;
 }
+
+@media only screen and (max-width: 1080px) {
+  .section1-text {
+    float: none;
+    width: 100%;
+    margin: 15px;
+  }
+  .section1-img {
+    float: none;
+    width: 100%;
+    margin: 0 15px;
+  }
+}
+
 .section1-sub {
   width: 33.3%;
   margin: 0;
