@@ -4,7 +4,6 @@ INDEX:
 
 MAIN:
 
-- better resizing of section content for 1 when narrow (use % of parent for horizonal margins and content width)
 - update placeholder image files
 - more extensive and dynamic use of images
 - make italics work in FAQ
