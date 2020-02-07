@@ -4,7 +4,6 @@ INDEX:
 
 MAIN:
 
-- make two section 1 image collages of different aspect ratios to adjust with page aspect ratio
 - update placeholder image files
 - more extensive and dynamic use of images
 - make italics work in FAQ
