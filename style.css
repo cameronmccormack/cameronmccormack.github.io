@@ -451,8 +451,12 @@ html, body {
   width: calc(50% - 22.5px);
   margin: 15px 15px 15px 7.5px;
 }
+.section1-img-wide {
+  width: 0;
+  margin: 0;
+}
 
-/* Reposition picture once width starts to shrink.*/
+/* Change visible picture and move once window starts to shrink.*/
 @media only screen and (max-width: 1080px) {
   .section1-text {
     float: none;
@@ -460,6 +464,11 @@ html, body {
     margin: 15px;
   }
   .section1-img {
+    float: none;
+    width: 0;
+    margin: 0;
+  }
+  .section1-img-wide {
     float: none;
     width: calc(100% - 30px);
     margin: 0 15px;
