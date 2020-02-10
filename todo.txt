@@ -1,9 +1,10 @@
 INDEX:
 
-- update placeholder image files
 
 MAIN:
 
-- update placeholder image files
-- more extensive and dynamic use of images
-- make italics work in FAQ
+- mobile css file
+
+OTHER:
+
+- create readme for github
