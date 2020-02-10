@@ -92,7 +92,7 @@ html, body {
   font-weight: 300;
   color: #E2E2E2;
   /* Position */
-  margin: 3vw;
+  margin: 3vw 0;
   position: relative;
 }
 .container-home h3 {
@@ -104,7 +104,7 @@ html, body {
   font-weight: 300;
   color: #E2E2E2;
   /* Position */
-  margin: 0vw;
+  margin: 0;
   position: relative;
 }
 
@@ -276,7 +276,9 @@ html, body {
 }
 .photo-row {
   width: 100%;
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 .hline {
   width: calc(100% - 30px);
@@ -605,8 +607,8 @@ html, body {
   color: #5E5E5E;
   margin: 15px;
 }
-.triple-img {
-  width: 30%;
+.section5 img {
+  width: 31.3%;
   margin: 1%;
 }
 
