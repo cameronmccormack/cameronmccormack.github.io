@@ -243,13 +243,11 @@ html, body {
 /* Containers */
 .container-main {
   width: 100%;
-  min-width: 700px;
   background-color: white;
   margin: 0;
 }
 .narrow-text {
   width: 100%;
-  min-width: 700px;
   max-width: 1080px;
   margin: 0 auto;
 }
@@ -291,7 +289,6 @@ html, body {
 .header {
   position: fixed;
   width: 100%;
-  min-width: 700px;
   max-width: 1080px;
   background: #5E5E5E;
   height: 65px;
