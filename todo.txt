@@ -3,6 +3,7 @@ INDEX:
 
 MAIN:
 
+- burger header menu below ipad size
 - mobile css file
 
 OTHER:
