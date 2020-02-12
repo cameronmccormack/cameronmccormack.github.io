@@ -4,7 +4,8 @@ INDEX:
 MAIN:
 
 - mobile css file
+- stop section 5 images stretching on ipad
 
 OTHER:
 
-- create readme for github
+
