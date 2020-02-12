@@ -1,11 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Quicksand);
 @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css);
 
-/* 
-  This .css file is for screensize > 750px width. A similar file, style-mobile.css, exists
-  for screen sizes greater than 750 px.
- */
-
 /***********
  * GENERAL *
  ***********/
@@ -456,25 +451,6 @@ html, body {
   margin: 0;
 }
 
-/* Change visible picture and move once window starts to shrink.*/
-@media only screen and (max-width: 1080px) {
-  .section1-text {
-    float: none;
-    width: calc(100% - 30px);
-    margin: 15px;
-  }
-  .section1-img {
-    float: left;
-    width: 0;
-    margin: 0;
-  }
-  .section1-img-wide {
-    float: none;
-    width: calc(100% - 30px);
-    margin: 0 15px 15px 15px;
-  }
-}
-
 .section1-sub {
   width: 33.3%;
   margin: 0;
@@ -506,11 +482,12 @@ html, body {
   width: 100%;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 .section2-vidbox {
   text-align: center;
-  margin: 15px;
-  width: 350px;
+  margin: 15px 15px 0 15px;
+  width: calc(33% - 30px);
 }
 .section2 h1 {
   font-family: "Quicksand";
@@ -548,6 +525,11 @@ html, body {
   width: 100%;
   height: 350px;
   border: none;
+}
+.hline-vid {
+  width: 0;
+  height: 0;
+  margin: 0;
 }
 
 /* Third Section: FAQs */
@@ -632,6 +614,39 @@ html, body {
   background-color: black;
 }
 
-/***************************
- * MAIN PAGE (MOBILE SITE) *
- **************************/
+/*****************************************************
+ * ADJUSTMENTS FOR ONCE MAIN WINDOW STARTS TO SHRINK *
+ *****************************************************/
+
+@media only screen and (max-width: 1080px) {
+  /* Change visible picture and move once window starts to shrink.*/
+  .section1-text {
+    float: none;
+    width: calc(100% - 30px);
+    margin: 15px;
+  }
+  .section1-img {
+    float: left;
+    width: 0;
+    margin: 0;
+  }
+  .section1-img-wide {
+    float: none;
+    width: calc(100% - 30px);
+    margin: 0 15px 15px 15px;
+  }
+
+  /* Make videos full width */
+  .section2-vidbox {
+    width: 100%;
+  }
+  .hline-vid {
+    width: 100%;
+    height: 2px;
+    background: #5E5E5E;
+  }
+}
+
+/*************************************
+ * ADJUSTMENTS FOR SMALL TABLET SIZE *
+ *************************************/
