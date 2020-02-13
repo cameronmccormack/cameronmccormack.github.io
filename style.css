@@ -297,7 +297,7 @@ html, body {
 }
 
 /* Header Text */
-.header h1 {
+.logo h1 {
   /* Style */
   text-align: center;
   font-family:"Quicksand";
@@ -313,7 +313,7 @@ html, body {
   margin-right: -50%;
   transform: translate(-50%, -50%);
 }
-.header h2 {
+.logo h2 {
   /* Style */
   text-align: center;
   font-family:"Quicksand";
@@ -328,6 +328,11 @@ html, body {
   left: 130px;
   margin-right: -50%;
   transform: translate(-50%, -50%);	
+}
+.logo:hover {
+  -webkit-transition-duration: 0.4s; /* For safari */
+  transition-duration: 0.4s;
+  text-shadow: 0 0 5px #E2E2E2; 
 }
 
 /* Header Section Buttons */
