@@ -333,11 +333,13 @@ html, body {
 /* Header Section Buttons */
 .header ul {
   list-style: none;
+  overflow: hidden;
   text-align: right;
   position: absolute;
   right: 10px;
   bottom: 5px;
   margin: 0;
+  padding: 0;
 }
 .header li {
   float: left;
@@ -639,3 +641,10 @@ html, body {
 /*************************************
  * ADJUSTMENTS FOR SMALL TABLET SIZE *
  *************************************/
+
+@media only screen and (max-width: 768px) {
+  /* Turn off hover effect for section buttons. */
+  .header li a:hover {
+    text-shadow: none;
+  }
+}
