@@ -351,6 +351,9 @@ html, body {
   position: relative;
   text-align: center;
 }
+.mobile-social {
+  display: none;
+}
 .header li a {
   /* Button size */
   height: 20px;
@@ -648,9 +651,9 @@ html, body {
   }
 }
 
-/*************************************
- * ADJUSTMENTS FOR SMALL TABLET SIZE *
- *************************************/
+/*******************************
+ * ADJUSTMENTS FOR TABLET SIZE *
+ *******************************/
 
 @media only screen and (max-width: 768px) {
   /* Turn off hover effect for section buttons. */
@@ -660,9 +663,7 @@ html, body {
 
   /* Hide regular menu */
   .header .menu {
-    clear: both;
-    max-height: 0;
-    transition: max-height .2s ease-out;
+    display: none;
   }
 
   /* Create "burger" icon */
@@ -716,7 +717,9 @@ html, body {
 
   /* Mobile menu when checked */
   .header input:checked ~ .menu {
+    display: initial;
     height: 210px;
+    width: 120px;
     max-height: none;
     background: #5E5E5E;
     top: 65px;
@@ -756,5 +759,24 @@ html, body {
   .container-socials-header {
     right: 70px;
     bottom: 12px;
+  }
+}
+
+/******************************
+ * ADJUSTMENTS FOR PHONE SIZE *
+ ******************************/
+
+@media only screen and (max-width: 520px) {
+  /* Hide social buttons */
+  .container-socials-header {
+    display: none;
+  }
+
+  /* Resize dropdown to include socials */
+  .header input:checked ~ .menu {
+    height: 336px;
+  }
+  .header input:checked ~ .menu .mobile-social {
+    display: inline-block;
   }
 }
