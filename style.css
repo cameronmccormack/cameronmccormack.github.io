@@ -716,8 +716,29 @@ html, body {
 
   /* Mobile menu when checked */
   .header input:checked ~ .menu {
-    max-height: 240px;
+    height: 240px; /**/
+    max-height: none; /**/
+    position: absolute;
+    top: 65px;
   }
+  .header input:checked ~ li {
+    float: left;
+    position: relative;
+    text-align: center;
+  }
+  .header input:checked ~ li a {
+    /* Button size */
+    height: 20px;
+    /* Button style */
+    background-color: transparent;
+    color: #E2E2E2;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-family: "Quicksand";
+    font-size: 20px;
+    margin: 0 7px;
+  } 
 
   /* Repositioned socials */
   .fa-head {
