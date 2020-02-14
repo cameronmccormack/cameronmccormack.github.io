@@ -3,9 +3,9 @@ INDEX:
 
 MAIN:
 
-- burger header menu below ipad size
-- mobile css file
+- add socials to dropdown below mobile size
+- close mobile menu on click
+- center title below mobile size
 
 OTHER:
-
 
