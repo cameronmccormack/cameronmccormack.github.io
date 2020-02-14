@@ -1,11 +1,10 @@
 INDEX:
 
+- fixed size footer
 
 MAIN:
 
-- add socials to dropdown below mobile size
 - close mobile menu on click
-- center title below mobile size
 
 OTHER:
 
