@@ -670,7 +670,7 @@ html, body {
     cursor: pointer;
     display: inline-block;
     float: right;
-    padding: 28px 20px;
+    padding: 30.5px 15px;
     position: relative;
     user-select: none;
   }
@@ -716,29 +716,36 @@ html, body {
 
   /* Mobile menu when checked */
   .header input:checked ~ .menu {
-    height: 240px; /**/
-    max-height: none; /**/
-    position: absolute;
+    height: 210px;
+    max-height: none;
+    background: #5E5E5E;
     top: 65px;
+    right: 0;
+    border-bottom: 2px solid #E2E2E2;
   }
-  .header input:checked ~ li {
-    float: left;
-    position: relative;
-    text-align: center;
+  .header input:checked ~ .menu li {
+    float: none;
+    width: 120px;
+    border-top: 2px solid #E2E2E2;
   }
-  .header input:checked ~ li a {
+  .header input:checked ~ .menu li:hover {
+    -webkit-transition-duration: 0.4s; /* For safari */
+    transition-duration: 0.4s;
+    background: #E2E2E2;
+  }
+  .header input:checked ~ .menu li a {
     /* Button size */
-    height: 20px;
+    height: 40px;
+    width: 120px;
     /* Button style */
-    background-color: transparent;
-    color: #E2E2E2;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-family: "Quicksand";
-    font-size: 20px;
-    margin: 0 7px;
-  } 
+    line-height: 40px;
+    margin: 0;
+  }
+  .header input:checked ~ .menu li:hover > a {
+    -webkit-transition-duration: 0.4s; /* For safari */
+    transition-duration: 0.4s;
+    color: #5E5E5E;
+  }
 
   /* Repositioned socials */
   .fa-head {
@@ -747,7 +754,7 @@ html, body {
     width: 36px;
   }
   .container-socials-header {
-    right: 74px;
-    bottom: 15px;
+    right: 70px;
+    bottom: 12px;
   }
 }
