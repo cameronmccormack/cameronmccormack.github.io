@@ -455,20 +455,26 @@ html, body {
 }
 
 .section1-sub {
-  width: 33.3%;
-  margin: 0;
+  width: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 15px 15px 0 15px;
   float: left;
   text-align: center;
 }
 .section1-sub h1 {
+  width: 33.3%;
   margin: 0;
   font-family: "Quicksand";
-  font-size: 25px;
+  font-size: 24px;
   font-weight: 5000;
   color: #5E5E5E;
 }
 .section1-sub p {
-  margin: 15px;
+  width: calc(33.3% - 10px);
+  margin: 15px 5px;
   font-family: "Quicksand";
   font-size: 18px;
   font-weight: 50;
@@ -476,8 +482,8 @@ html, body {
   text-align: center;
 }
 .section1-sub img {
-  margin: 0 15px 15px 15px;
-  width: calc(100% - 30px);
+  margin: 5px;
+  width: calc(33.3% - 10px);
 }
 
 /* Second Section: Videos */
@@ -773,6 +779,13 @@ html, body {
     right: 70px;
     bottom: 12px;
   }
+}
+
+/**********************************************
+ * ADJUST SECTION 1 COLUMNS BELOW MANUAL SIZE *
+ **********************************************/
+
+@media only screen and (max-width: 700px) {
 }
 
 /******************************
