@@ -6,6 +6,7 @@
  ***********/
 html, body {
   margin: 0;
+  overflow-wrap: break-word;
 }
 
 /*************
@@ -817,6 +818,13 @@ html, body {
   #s1f{order: 8;}
   #s1g{order: 3;}
   #s1h{order: 6;}
+}
+
+/**********************************************
+ * ADJUST SECTION 1 COLUMNS BELOW MANUAL SIZE *
+ **********************************************/
+
+@media only screen and (max-width: 600px) {
 }
 
 /******************************
