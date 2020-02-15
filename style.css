@@ -841,9 +841,9 @@ html, body {
   #s1h{order: 4;}
 }
 
-/******************************
- * ADJUSTMENTS FOR PHONE SIZE *
- ******************************/
+/************************************
+ * ADJUSTMENTS FOR LARGE PHONE SIZE *
+ ************************************/
 
 @media only screen and (max-width: 520px) {
   /* Hide social buttons */
@@ -857,5 +857,19 @@ html, body {
   }
   .header input:checked ~ .menu .mobile-social {
     display: inline-block;
+  }
+}
+
+/************************************
+ * ADJUSTMENTS FOR SMALL PHONE SIZE *
+ ************************************/
+
+@media only screen and (max-width: 420px) {
+  .footer-main p {
+    font-size: 15px;
+  }
+  .footer-wide {
+    height: 20px;
+    margin-top: -20px;
   }
 }
