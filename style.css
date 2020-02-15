@@ -825,6 +825,20 @@ html, body {
  **********************************************/
 
 @media only screen and (max-width: 600px) {
+  .s1-sub-text {
+    width: 100%;
+  }
+  .section1-sub img {
+    width: calc(33.3% - 10px);
+  }
+  #s1a{order: 1;}
+  #s1b{order: 3;}
+  #s1c{order: 5;}
+  #s1d{order: 6;}
+  #s1e{order: 7;}
+  #s1f{order: 8;}
+  #s1g{order: 2;}
+  #s1h{order: 4;}
 }
 
 /******************************
