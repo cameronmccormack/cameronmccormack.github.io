@@ -488,6 +488,9 @@ html, body {
   margin: 5px;
   width: calc(33.3% - 10px);
 }
+.s1-sub-hline {
+  display: none;
+}
 
 /* Second Section: Videos */
 .section2 {
@@ -789,6 +792,31 @@ html, body {
  **********************************************/
 
 @media only screen and (max-width: 700px) {
+  .section1-sub {
+    align-items: center;
+    margin: 0 15px;
+  }
+  .s1-sub-text {
+    width: 60%;
+  }
+  .section1-sub img {
+    width: calc(40% - 10px);
+  }
+  .s1-sub-hline {
+    display: inline-block;
+    width: 100%;
+    height: 2px;
+    background: #5E5E5E;
+    margin: 15px 0;
+  }
+  #s1a{order: 1;}
+  #s1b{order: 5;}
+  #s1c{order: 7;}
+  #s1d{order: 2;}
+  #s1e{order: 4;}
+  #s1f{order: 8;}
+  #s1g{order: 3;}
+  #s1h{order: 6;}
 }
 
 /******************************
