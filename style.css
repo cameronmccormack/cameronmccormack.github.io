@@ -464,8 +464,11 @@ html, body {
   float: left;
   text-align: center;
 }
-.section1-sub h1 {
+.s1-sub-text {
   width: 33.3%;
+}
+.section1-sub h1 {
+  width: 100%;
   margin: 0;
   font-family: "Quicksand";
   font-size: 24px;
@@ -473,7 +476,7 @@ html, body {
   color: #5E5E5E;
 }
 .section1-sub p {
-  width: calc(33.3% - 10px);
+  width: calc(100% - 10px);
   margin: 15px 5px;
   font-family: "Quicksand";
   font-size: 18px;
