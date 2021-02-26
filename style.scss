@@ -311,9 +311,7 @@ html, body {
     bottom: 5px;
     margin: 0;
     padding: 0;
-    @media only screen and (max-width: $tablet-width-threshold) {
-      display: none;
-    }
+
   }
   li {
     float: left;
