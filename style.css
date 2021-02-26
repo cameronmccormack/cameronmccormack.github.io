@@ -1,6 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Quicksand);
 @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css);
-
 /***********
  * GENERAL *
  ***********/
@@ -12,8 +11,7 @@ html, body {
 /*************
  * HOME PAGE *
  *************/
-
-/* Containers */ 
+/* Containers */
 .container {
   width: 100%;
   position: relative;
@@ -21,16 +19,98 @@ html, body {
   overflow: hidden;
   background: black;
 }
+
 .container-home {
   height: 100vh;
   min-height: 50vw;
   min-width: 50vh;
 }
+.container-home h1 {
+  /* Style */
+  text-align: center;
+  font-family: "Quicksand";
+  font-size: calc(4vw + 4vh);
+  font-variant: normal;
+  font-weight: 300;
+  color: #E2E2E2;
+  /* Position */
+  margin: 0;
+  position: relative;
+  /* Minimum height handling */
+  /* Minimum width handling */
+}
+@media only screen and (max-height: 50vw) {
+  .container-home h1 {
+    font-size: 6vw;
+  }
+}
+@media only screen and (max-width: 50vh) {
+  .container-home h1 {
+    font-size: 6vh;
+  }
+}
+.container-home h2 {
+  /* Style */
+  text-align: center;
+  font-family: "Quicksand";
+  font-size: calc(1.5vw + 1.5vh);
+  font-variant: normal;
+  font-weight: 300;
+  color: #E2E2E2;
+  /* Position */
+  margin: 3vw 0;
+  position: relative;
+  /* Minimum height handling */
+  /* Minimum width handling */
+}
+@media only screen and (max-height: 50vw) {
+  .container-home h2 {
+    font-size: 2.25vw;
+  }
+}
+@media only screen and (max-width: 50vh) {
+  .container-home h2 {
+    font-size: 2.25vh;
+    margin: 1.5vh;
+  }
+}
+.container-home h3 {
+  /* Style */
+  text-align: center;
+  font-family: "Quicksand";
+  font-size: calc(1.5vw + 1.5vh);
+  font-variant: normal;
+  font-weight: 300;
+  color: #E2E2E2;
+  /* Position */
+  margin: 0;
+  position: relative;
+  /* Minimum height handling */
+  /* Minimum width handling */
+}
+@media only screen and (max-height: 50vw) {
+  .container-home h3 {
+    font-size: 2.25vw;
+  }
+}
+@media only screen and (max-width: 50vh) {
+  .container-home h3 {
+    font-size: 2.25vh;
+  }
+}
+
 .container-title {
   position: relative;
   width: 100%;
   margin-top: 5vh;
+  /* Minimum height handling */
 }
+@media only screen and (max-height: 50vw) {
+  .container-title {
+    margin-top: 2.5vw;
+  }
+}
+
 .container-options {
   text-align: center;
   position: absolute;
@@ -39,10 +119,23 @@ html, body {
   margin-right: -50%;
   transform: translate(-50%, -50%);
 }
+
 .container-buttons {
   text-align: center;
   position: relative;
   margin: calc(1vw + 1vh);
+  /* Minimum height handling */
+  /* Minimum width handling */
+}
+@media only screen and (max-height: 50vw) {
+  .container-buttons {
+    margin: 1.5vw;
+  }
+}
+@media only screen and (max-width: 50vh) {
+  .container-buttons {
+    margin: 1.5vh;
+  }
 }
 
 /* Image and Video Formatting */
@@ -54,54 +147,18 @@ html, body {
   object-fit: cover;
   vertical-align: middle;
 }
+
 .iframe-home-box {
   float: left;
   margin: 0;
   width: 50%;
 }
+
 .iframe-home {
   width: 50vw;
   height: 28.125vw;
   vertical-align: middle;
   border: none;
-}
-
-/* Text Style and Positioning */
-.container-title h1 {
-  /* Style */
-  text-align: center;
-  font-family:"Quicksand";
-  font-size: calc(4vw + 4vh);
-  font-variant: normal;
-  font-weight: 300;
-  color: #E2E2E2;
-  /* Position */
-  margin: 0;
-  position: relative;
-}
-.container-home h2 {
-  /* Style */
-  text-align: center;
-  font-family:"Quicksand";
-  font-size: calc(1.5vw + 1.5vh);
-  font-variant: normal;
-  font-weight: 300;
-  color: #E2E2E2;
-  /* Position */
-  margin: 3vw 0;
-  position: relative;
-}
-.container-home h3 {
-  /* Style */
-  text-align: center;
-  font-family:"Quicksand";
-  font-size: calc(1.5vw + 1.5vh);
-  font-variant: normal;
-  font-weight: 300;
-  color: #E2E2E2;
-  /* Position */
-  margin: 0;
-  position: relative;
 }
 
 /* Buttons */
@@ -120,12 +177,35 @@ html, body {
   display: inline-block;
   font-family: "Quicksand";
   font-size: calc(1.2vw + 1.2vh);
+  /* Minimum height handling */
+  /* Minimum width handling */
 }
 .button-home:hover {
-  -webkit-transition-duration: 0.4s; /* For safari */
+  -webkit-transition-duration: 0.4s;
+  /* For safari */
   transition-duration: 0.4s;
   background-color: #E2E2E2;
   color: black;
+}
+@media only screen and (max-height: 50vw) {
+  .button-home {
+    margin: 0.75vw;
+    border: 0.225vw solid #E2E2E2;
+    border-radius: 0.9vw;
+    width: 10.5vw;
+    padding: 0.9vw 0;
+    font-size: 1.8vw;
+  }
+}
+@media only screen and (max-width: 50vh) {
+  .button-home {
+    margin: 0.75vh;
+    border: 0.225vh solid #E2E2E2;
+    border-radius: 0.9vh;
+    width: 10.5vh;
+    padding: 0.9vh 0;
+    font-size: 1.8vh;
+  }
 }
 
 /* Social Media Buttons */
@@ -136,44 +216,22 @@ html, body {
   padding: calc(0.6vw + 0.6vh) calc(0.4vw + 0.4vh);
   font-size: calc(1.2vw + 1.2vh);
   width: calc(1.6vw + 1.6vh);
-  border: calc(0.15vw + 0.15vh) solid #E2E2E2;  
+  border: calc(0.15vw + 0.15vh) solid #E2E2E2;
   border-radius: 50%;
   text-align: center;
   text-decoration: none;
   color: #E2E2E2;
+  /* Minimum height handling */
+  /* Minimum width handling */
 }
 .fa-home:hover {
-  -webkit-transition-duration: 0.4s; /* For safari */
+  -webkit-transition-duration: 0.4s;
+  /* For safari */
   transition-duration: 0.4s;
   background-color: #E2E2E2;
   color: black;
 }
-
-/* Stop page elements shrinking once height goes below min-height */
 @media only screen and (max-height: 50vw) {
-  .container-title {
-    margin-top: 2.5vw;
-  }
-  .container-home h1 {
-    font-size: 6vw;
-  }
-  .container-home h2 {
-    font-size: 2.25vw;
-  }
-  .container-home h3 {
-    font-size: 2.25vw;
-  }
-  .container-buttons {
-    margin: 1.5vw;
-  }
-  .button-home {
-    margin: 0.75vw;
-    border: 0.225vw solid #E2E2E2;
-    border-radius: 0.9vw;
-    width: 10.5vw;
-    padding: 0.9vw 0;
-    font-size: 1.8vw;
-  }
   .fa-home {
     margin: 0.6vw;
     padding: 0.9vw 0.6vw;
@@ -182,30 +240,7 @@ html, body {
     border: 0.225vw solid #E2E2E2;
   }
 }
-
-/* Stop page elements shrinking once width goes below min-width. */
 @media only screen and (max-width: 50vh) {
-  .container-home h1 {
-    font-size: 6vh
-  }
-  .container-home h2 {
-    font-size: 2.25vh;
-    margin: 1.5vh;
-  }
-  .container-home h3 {
-    font-size: 2.25vh;
-  }
-  .container-buttons {
-    margin: 1.5vh;
-  }
-  .button-home {
-    margin: 0.75vh;
-    border: 0.225vh solid #E2E2E2;
-    border-radius: 0.9vh;
-    width: 10.5vh;
-    padding: 0.9vh 0;
-    font-size: 1.8vh;
-  }
   .fa-home {
     margin: 0.6vh;
     padding: 0.9vh 0.6vh;
@@ -222,9 +257,10 @@ html, body {
   margin: 0;
   background-color: black;
 }
+
 .footer-home p {
   text-align: left;
-  font-family:"Quicksand";
+  font-family: "Quicksand";
   font-size: 20px;
   font-variant: normal;
   font-weight: 100;
@@ -235,13 +271,13 @@ html, body {
 /*************
  * MAIN PAGE *
  *************/
-
 /* Containers */
 .container-main {
   width: 100%;
   background-color: white;
   margin: 0;
 }
+
 .narrow-text {
   width: 100%;
   max-width: 1080px;
@@ -249,25 +285,39 @@ html, body {
 }
 .narrow-text p {
   text-align: justify;
-  font-family:"Quicksand";
+  font-family: "Quicksand";
   font-size: 20px;
   font-variant: normal;
   font-weight: 50;
   color: #5E5E5E;
   margin: 15px;
 }
+
 .container-socials-header {
   text-align: center;
   position: absolute;
   right: 10px;
   bottom: 32px;
 }
+@media only screen and (max-width: 50vh) {
+  .container-socials-header {
+    right: 70px;
+    bottom: 12px;
+  }
+}
+@media only screen and (max-width: 520px) {
+  .container-socials-header {
+    display: none;
+  }
+}
+
 .photo-row {
   width: 100%;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
 }
+
 .hline {
   width: calc(100% - 30px);
   height: 2px;
@@ -275,7 +325,7 @@ html, body {
   margin: 0 15px 20px 15px;
 }
 
-/* Header Container */
+/* Header */
 .header {
   position: fixed;
   width: 100%;
@@ -283,60 +333,8 @@ html, body {
   background: #5E5E5E;
   height: 65px;
   z-index: 1000;
+  /* Create "burger" icon */
 }
-.header-background {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  text-align: center;
-  background: #5E5E5E;
-  height: 65px;
-  z-index: 999;
-}
-.header-spacing {
-  height: 65px;
-}
-
-/* Header Text */
-.logo h1 {
-  /* Style */
-  text-align: center;
-  font-family:"Quicksand";
-  font-size: 40px;
-  font-variant: normal;
-  font-weight: 350;
-  color: #E2E2E2;
-  /* Position */
-  margin: 0;
-  position: absolute;
-  top: 40px;
-  left: 130px;
-  margin-right: -50%;
-  transform: translate(-50%, -50%);
-}
-.logo h2 {
-  /* Style */
-  text-align: center;
-  font-family:"Quicksand";
-  font-size: 20px;
-  font-variant: normal;
-  font-weight: 50;
-  color: #E2E2E2;
-  /* Position */
-  margin: 0;
-  position: absolute;
-  top: 15px;
-  left: 130px;
-  margin-right: -50%;
-  transform: translate(-50%, -50%);	
-}
-.logo:hover {
-  -webkit-transition-duration: 0.4s; /* For safari */
-  transition-duration: 0.4s;
-  text-shadow: 0 0 5px #E2E2E2; 
-}
-
-/* Header Section Buttons */
 .header .menu {
   list-style: none;
   overflow: hidden;
@@ -347,13 +345,15 @@ html, body {
   margin: 0;
   padding: 0;
 }
+@media only screen and (max-width: 768px) {
+  .header .menu {
+    display: none;
+  }
+}
 .header li {
   float: left;
   position: relative;
   text-align: center;
-}
-.mobile-social {
-  display: none;
 }
 .header li a {
   /* Button size */
@@ -369,7 +369,147 @@ html, body {
   margin: 0 7px;
 }
 .header li a:hover {
-  -webkit-transition-duration: 0.4s; /* For safari */
+  -webkit-transition-duration: 0.4s;
+  /* For safari */
+  transition-duration: 0.4s;
+  text-shadow: 0 0 5px #E2E2E2;
+}
+@media only screen and (max-width: 768px) {
+  .header li a:hover {
+    display: none;
+  }
+}
+.header input {
+  /* Mobile menu defaults for widescreen */
+  display: none;
+}
+@media only screen and (max-width: 768px) {
+  .header input:checked ~ .menu-icon:not(.steps) .navicon:before, .header input:checked ~ .menu-icon:not(.steps) .navicon:after {
+    top: 0;
+  }
+  .header input:checked ~ .menu-icon .navicon:before {
+    transform: rotate(-45deg);
+  }
+  .header input:checked ~ .menu-icon .navicon:after {
+    transform: rotate(45deg);
+  }
+  .header input:checked ~ .menu li {
+    float: none;
+    width: 120px;
+    border-top: 2px solid #E2E2E2;
+  }
+  .header input:checked ~ .menu li:hover {
+    -webkit-transition-duration: 0.4s;
+    /* For safari */
+    transition-duration: 0.4s;
+    background: #E2E2E2;
+  }
+  .header input:checked ~ .menu li:hover > a {
+    -webkit-transition-duration: 0.4s;
+    /* For safari */
+    transition-duration: 0.4s;
+    color: #5E5E5E;
+  }
+  .header input:checked ~ .menu li a {
+    /* Button size */
+    height: 40px;
+    width: 120px;
+    /* Button style */
+    line-height: 40px;
+    margin: 0;
+  }
+}
+@media only screen and (max-width: 520px) {
+  .header input:checked ~ .menu {
+    height: 336px;
+  }
+  .header input:checked ~ .menu .mobile-social {
+    display: inline-block;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .header .menu-icon {
+    cursor: pointer;
+    display: inline-block;
+    float: right;
+    padding: 30.5px 15px;
+    position: relative;
+    user-select: none;
+  }
+  .header .menu-icon .navicon {
+    background: #E5E5E5;
+    display: block;
+    height: 4px;
+    position: relative;
+    transition: background 0.2s ease-out;
+    width: 36px;
+  }
+  .header .menu-icon .navicon:before, .header .menu-icon .navicon:after {
+    background: #E5E5E5;
+    content: "";
+    display: block;
+    height: 100%;
+    position: absolute;
+    transition: all 0.2s ease-out;
+    width: 100%;
+  }
+  .header .menu-icon .navicon:before {
+    top: 10px;
+  }
+  .header .menu-icon .navicon:after {
+    top: -10px;
+  }
+}
+
+.header-background {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  text-align: center;
+  background: #5E5E5E;
+  height: 65px;
+  z-index: 999;
+}
+
+.header-spacing {
+  height: 65px;
+}
+
+.logo h1 {
+  /* Style */
+  text-align: center;
+  font-family: "Quicksand";
+  font-size: 40px;
+  font-variant: normal;
+  font-weight: 350;
+  color: #E2E2E2;
+  /* Position */
+  margin: 0;
+  position: absolute;
+  top: 40px;
+  left: 130px;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+.logo h2 {
+  /* Style */
+  text-align: center;
+  font-family: "Quicksand";
+  font-size: 20px;
+  font-variant: normal;
+  font-weight: 50;
+  color: #E2E2E2;
+  /* Position */
+  margin: 0;
+  position: absolute;
+  top: 15px;
+  left: 130px;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+.logo:hover {
+  -webkit-transition-duration: 0.4s;
+  /* For safari */
   transition-duration: 0.4s;
   text-shadow: 0 0 5px #E2E2E2;
 }
@@ -385,14 +525,17 @@ html, body {
   border: 0;
 }
 .fa-head:hover {
-  -webkit-transition-duration: 0.4s; /* For safari */
+  -webkit-transition-duration: 0.4s;
+  /* For safari */
   transition-duration: 0.4s;
   text-shadow: 0 0 5px #E2E2E2;
 }
-
-/* Mobile menu defaults for widescreen */
-.header input {
-  display: none;
+@media only screen and (max-width: 768px) {
+  .fa-head {
+    padding: 6px;
+    font-size: 27px;
+    width: 36px;
+  }
 }
 
 /* Section Title Banner */
@@ -402,11 +545,13 @@ html, body {
   height: 33vh;
   min-height: 200px;
 }
+
 .banner-img {
-  width: 100%; 
+  width: 100%;
   height: 100%;
   object-fit: cover;
 }
+
 .banner-text {
   font-family: "Quicksand";
   color: #E2E2E2;
@@ -417,7 +562,7 @@ html, body {
   transform: translate(-50%, -50%);
 }
 .banner-text h1 {
-  font-weight: 350;	
+  font-weight: 350;
   font-size: 60px;
   margin: 0;
 }
@@ -425,6 +570,7 @@ html, body {
   font-weight: 50;
   font-size: 20px;
 }
+
 .banner-anchor {
   display: block;
   position: relative;
@@ -440,19 +586,42 @@ html, body {
 }
 .section1-text p {
   text-align: justify;
-  font-family:"Quicksand";
+  font-family: "Quicksand";
   font-size: 20px;
   font-weight: 50;
   color: #5E5E5E;
   margin: 0 0 15px 0;
 }
+@media only screen and (max-width: 1080px) {
+  .section1-text {
+    float: none;
+    width: calc(100% - 30px);
+    margin: 15px;
+  }
+}
+
 .section1-img {
   width: calc(50% - 22.5px);
   margin: 15px 15px 15px 7.5px;
 }
+@media only screen and (max-width: 1080px) {
+  .section1-img {
+    float: left;
+    width: 0;
+    margin: 0;
+  }
+}
+
 .section1-img-wide {
   width: 0;
   margin: 0;
+}
+@media only screen and (max-width: 1080px) {
+  .section1-img-wide {
+    float: none;
+    width: calc(100% - 30px);
+    margin: 0 15px 15px 15px;
+  }
 }
 
 .section1-sub {
@@ -464,9 +633,6 @@ html, body {
   margin: 15px 15px 0 15px;
   float: left;
   text-align: center;
-}
-.s1-sub-text {
-  width: 33.3%;
 }
 .section1-sub h1 {
   width: 100%;
@@ -489,23 +655,120 @@ html, body {
   margin: 5px;
   width: calc(33.3% - 10px);
 }
+@media only screen and (max-width: 700px) {
+  .section1-sub {
+    align-items: center;
+    margin: 0 15px;
+  }
+  .section1-sub img {
+    width: calc(40% - 10px);
+  }
+}
+@media only screen and (max-width: 600px) {
+  .section1-sub img {
+    width: calc(33.3% - 10px);
+  }
+}
+
+.s1-sub-text {
+  width: 33.3%;
+}
+@media only screen and (max-width: 700px) {
+  .s1-sub-text {
+    width: 60%;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .s1-sub-text {
+    width: 100%;
+  }
+}
+
 .s1-sub-hline {
   display: none;
 }
+@media only screen and (max-width: 700px) {
+  .s1-sub-hline {
+    display: inline-block;
+    width: 100%;
+    height: 2px;
+    background: #5E5E5E;
+    margin: 15px 0;
+  }
+}
 
+@media only screen and (max-width: 700px) {
+  #s1a {
+    order: 1;
+  }
+
+  #s1b {
+    order: 5;
+  }
+
+  #s1c {
+    order: 7;
+  }
+
+  #s1d {
+    order: 2;
+  }
+
+  #s1e {
+    order: 4;
+  }
+
+  #s1f {
+    order: 8;
+  }
+
+  #s1g {
+    order: 3;
+  }
+
+  #s1h {
+    order: 6;
+  }
+}
+@media only screen and (max-width: 600px) {
+  #s1a {
+    order: 1;
+  }
+
+  #s1b {
+    order: 3;
+  }
+
+  #s1c {
+    order: 5;
+  }
+
+  #s1d {
+    order: 6;
+  }
+
+  #s1e {
+    order: 7;
+  }
+
+  #s1f {
+    order: 8;
+  }
+
+  #s1g {
+    order: 2;
+  }
+
+  #s1h {
+    order: 4;
+  }
+}
 /* Second Section: Videos */
 .section2 {
   width: 100%;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-}
-.section2-vidbox {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  margin: 15px 15px 0 15px;
-  width: calc(33% - 30px);
 }
 .section2 h1 {
   font-family: "Quicksand";
@@ -514,13 +777,6 @@ html, body {
   font-weight: 300px;
   color: #5E5E5E;
   margin: 0;
-}
-.s2-artist {
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 5px 0 10px 0;
 }
 .section2 h2 {
   font-family: "Quicksand";
@@ -531,7 +787,7 @@ html, body {
   margin: 0;
 }
 .section2 p {
-  font-family:"Quicksand";
+  font-family: "Quicksand";
   font-size: 20px;
   font-variant: normal;
   font-weight: 50;
@@ -544,12 +800,71 @@ html, body {
   height: 350px;
   border: none;
 }
+@media only screen and (max-width: 1080px) {
+  .section2 {
+    margin: 0 0 15px 0;
+  }
+  .section2 p {
+    margin: 0 0 10px 0;
+  }
+}
+
+.section2-vidbox {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin: 15px 15px 0 15px;
+  width: calc(33% - 30px);
+}
+@media only screen and (max-width: 1080px) {
+  .section2-vidbox {
+    width: 100%;
+  }
+}
+
+.s2-artist {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px 0 10px 0;
+}
+
 .hline-vid {
   width: 0;
   height: 0;
   margin: 23px 0 0 0;
 }
+@media only screen and (max-width: 1080px) {
+  .hline-vid {
+    width: 100%;
+    height: 2px;
+    background: #5E5E5E;
+  }
+}
 
+/* Reorder content */
+@media only screen and (max-width: 1080px) {
+  #vid1 {
+    order: 1;
+  }
+
+  #vid2 {
+    order: 2;
+  }
+
+  #vid3 {
+    order: 3;
+  }
+
+  #vid4 {
+    order: 4;
+  }
+
+  #vid5 {
+    order: 5;
+  }
+}
 /* Third Section: FAQs */
 .section3 {
   width: 100%;
@@ -565,7 +880,7 @@ html, body {
 }
 .section3 p {
   text-align: left;
-  font-family:"Quicksand";
+  font-family: "Quicksand";
   font-size: 20px;
   font-style: italic;
   font-weight: 50;
@@ -597,7 +912,7 @@ html, body {
 }
 .section5 p {
   text-align: justify;
-  font-family:"Quicksand";
+  font-family: "Quicksand";
   font-size: 20px;
   font-variant: normal;
   font-weight: 50;
@@ -607,7 +922,8 @@ html, body {
 .section5 img {
   width: 31.3%;
   margin: 1%;
-  align-self: center; /* stop images stretching on iOS */
+  align-self: center;
+  /* stop images stretching on iOS */
 }
 
 /* Footer */
@@ -619,257 +935,30 @@ html, body {
 }
 .footer-main p {
   text-align: left;
-  font-family:"Quicksand";
+  font-family: "Quicksand";
   font-size: 20px;
   font-variant: normal;
   font-weight: 50;
   color: #E2E2E2;
   margin: 0 15px;
 }
+@media only screen and (max-width: 420px) {
+  .footer-main p {
+    font-size: 15px;
+  }
+}
+
 .footer-wide {
   width: 100%;
   height: 25px;
   margin-top: -25px;
   background-color: black;
 }
-
-/*****************************************************
- * ADJUSTMENTS FOR ONCE MAIN WINDOW STARTS TO SHRINK *
- *****************************************************/
-
-@media only screen and (max-width: 1080px) {
-  /* Change visible picture and move once window starts to shrink.*/
-  .section1-text {
-    float: none;
-    width: calc(100% - 30px);
-    margin: 15px;
-  }
-  .section1-img {
-    float: left;
-    width: 0;
-    margin: 0;
-  }
-  .section1-img-wide {
-    float: none;
-    width: calc(100% - 30px);
-    margin: 0 15px 15px 15px;
-  }
-
-  /* Make videos full width */
-  .section2-vidbox {
-    width: 100%;
-  }
-  .hline-vid {
-    width: 100%;
-    height: 2px;
-    background: #5E5E5E;
-  }
-  #vid1{order: 1;}
-  #vid2{order: 2;}
-  #vid3{order: 3;}
-  #vid4{order: 4;}
-  #vid5{order: 5;}
-  .section2 {
-    margin: 0 0 15px 0;
-  }
-  .section2 p {
-    margin: 0 0 10px 0;
-  }
-}
-
-/*******************************
- * ADJUSTMENTS FOR TABLET SIZE *
- *******************************/
-
-@media only screen and (max-width: 768px) {
-  /* Turn off hover effect for section buttons. */
-  .header li a:hover {
-    text-shadow: none;
-  }
-
-  /* Hide regular menu */
-  .header .menu {
-    display: none;
-  }
-
-  /* Create "burger" icon */
-  .header .menu-icon {
-    cursor: pointer;
-    display: inline-block;
-    float: right;
-    padding: 30.5px 15px;
-    position: relative;
-    user-select: none;
-  }
-  .header .menu-icon .navicon {
-    background: #E5E5E5;
-    display: block;
-    height: 4px;
-    position: relative;
-    transition: background .2s ease-out;
-    width: 36px;
-  }
-  .header .menu-icon .navicon:before,
-  .header .menu-icon .navicon:after {
-    background: #E5E5E5;
-    content: '';
-    display: block;
-    height: 100%;
-    position: absolute;
-    transition: all .2s ease-out;
-    width: 100%;
-  }
-  .header .menu-icon .navicon:before {
-    top: 10px;
-  }
-  .header .menu-icon .navicon:after {
-    top: -10px;
-  }
-
-  /* "burger" icon effects when clicked */
-  .header input:checked ~ .menu-icon .navicon {
-    background: transparent;
-  }
-  .header input:checked ~ .menu-icon .navicon:before {
-    transform: rotate(-45deg);
-  }
-  .header input:checked ~ .menu-icon .navicon:after {
-    transform: rotate(45deg);
-  }
-  .header input:checked ~ .menu-icon:not(.steps) .navicon:before,
-  .header input:checked ~ .menu-icon:not(.steps) .navicon:after {
-    top: 0;
-  }
-
-  /* Mobile menu when checked */
-  .header input:checked ~ .menu {
-    display: initial;
-    height: 210px;
-    width: 120px;
-    max-height: none;
-    background: #5E5E5E;
-    top: 65px;
-    right: 0;
-    border-bottom: 2px solid #E2E2E2;
-  }
-  .header input:checked ~ .menu li {
-    float: none;
-    width: 120px;
-    border-top: 2px solid #E2E2E2;
-  }
-  .header input:checked ~ .menu li:hover {
-    -webkit-transition-duration: 0.4s; /* For safari */
-    transition-duration: 0.4s;
-    background: #E2E2E2;
-  }
-  .header input:checked ~ .menu li a {
-    /* Button size */
-    height: 40px;
-    width: 120px;
-    /* Button style */
-    line-height: 40px;
-    margin: 0;
-  }
-  .header input:checked ~ .menu li:hover > a {
-    -webkit-transition-duration: 0.4s; /* For safari */
-    transition-duration: 0.4s;
-    color: #5E5E5E;
-  }
-
-  /* Repositioned socials */
-  .fa-head {
-    padding: 6px;
-    font-size: 27px;
-    width: 36px;
-  }
-  .container-socials-header {
-    right: 70px;
-    bottom: 12px;
-  }
-}
-
-/**********************************************
- * ADJUST SECTION 1 COLUMNS BELOW MANUAL SIZE *
- **********************************************/
-
-@media only screen and (max-width: 700px) {
-  .section1-sub {
-    align-items: center;
-    margin: 0 15px;
-  }
-  .s1-sub-text {
-    width: 60%;
-  }
-  .section1-sub img {
-    width: calc(40% - 10px);
-  }
-  .s1-sub-hline {
-    display: inline-block;
-    width: 100%;
-    height: 2px;
-    background: #5E5E5E;
-    margin: 15px 0;
-  }
-  #s1a{order: 1;}
-  #s1b{order: 5;}
-  #s1c{order: 7;}
-  #s1d{order: 2;}
-  #s1e{order: 4;}
-  #s1f{order: 8;}
-  #s1g{order: 3;}
-  #s1h{order: 6;}
-}
-
-/**********************************************
- * ADJUST SECTION 1 COLUMNS BELOW MANUAL SIZE *
- **********************************************/
-
-@media only screen and (max-width: 600px) {
-  .s1-sub-text {
-    width: 100%;
-  }
-  .section1-sub img {
-    width: calc(33.3% - 10px);
-  }
-  #s1a{order: 1;}
-  #s1b{order: 3;}
-  #s1c{order: 5;}
-  #s1d{order: 6;}
-  #s1e{order: 7;}
-  #s1f{order: 8;}
-  #s1g{order: 2;}
-  #s1h{order: 4;}
-}
-
-/************************************
- * ADJUSTMENTS FOR LARGE PHONE SIZE *
- ************************************/
-
-@media only screen and (max-width: 520px) {
-  /* Hide social buttons */
-  .container-socials-header {
-    display: none;
-  }
-
-  /* Resize dropdown to include socials */
-  .header input:checked ~ .menu {
-    height: 336px;
-  }
-  .header input:checked ~ .menu .mobile-social {
-    display: inline-block;
-  }
-}
-
-/************************************
- * ADJUSTMENTS FOR SMALL PHONE SIZE *
- ************************************/
-
 @media only screen and (max-width: 420px) {
-  .footer-main p {
-    font-size: 15px;
-  }
   .footer-wide {
     height: 20px;
     margin-top: -20px;
   }
 }
+
+/*# sourceMappingURL=style.css.map */
