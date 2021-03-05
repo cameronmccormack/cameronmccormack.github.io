@@ -273,12 +273,12 @@ html, body {
   position: absolute;
   right: 10px;
   bottom: 32px;
-  @media only screen and (max-width: $home-screen-minimum-width) {
+  @media only screen and (max-width: $tablet-width-threshold) {
     right: 70px;
     bottom: 12px;
   }
   @media only screen and (max-width: $large-mobile-width-threshold) {
-    display:none;
+    display: none;
   }
 }
 .photo-row {
@@ -311,7 +311,9 @@ html, body {
     bottom: 5px;
     margin: 0;
     padding: 0;
-
+    @media only screen and (max-width: $tablet-width-threshold) {
+      display: none;
+    }
   }
   li {
     float: left;
@@ -347,48 +349,62 @@ html, body {
     /* Mobile menu defaults for widescreen */
     display: none;
     @media only screen and (max-width: $tablet-width-threshold) {
-      &:checked ~ {
-        .menu-icon {
-          &:not(.steps) .navicon {
-            &:before, &:after {
-              top: 0;
-            }
-          }
-          .navicon {
-            &:before {
-              transform: rotate(-45deg);
-            }
-            &:after{
-              transform: rotate(45deg);
-            }
-          }
-        }
-        .menu {
-          li {
-            float: none;
-            width: 120px;
-            border-top: 2px solid #E2E2E2;
-            &:hover {
-              -webkit-transition-duration: 0.4s; /* For safari */
-              transition-duration: 0.4s;
-              background: #E2E2E2;
-              > a {
-                -webkit-transition-duration: 0.4s; /* For safari */
-                transition-duration: 0.4s;
-                color: #5E5E5E;
-              }
-            }
-            a {
-              /* Button size */
-              height: 40px;
-              width: 120px;
-              /* Button style */
-              line-height: 40px;
-              margin: 0;
-            }
-          }
-        } 
-      }
+      &:checked {
+				~ {
+					.menu-icon {
+						.navicon {
+							background: transparent;
+							&:before {
+								transform: rotate(-45deg);
+							}
+							&:after {
+								transform: rotate(45deg);
+							}
+						}
+						&:not(.steps) {
+							.navicon {
+								&:before {
+									top: 0;
+								}
+								&:after {
+									top: 0;
+								}
+							}
+						}
+					}
+					.menu {
+						display: initial;
+						height: 210px;
+						width: 120px;
+						max-height: none;
+						background: #5E5E5E;
+						top: 65px;
+						right: 0;
+						border-bottom: 2px solid #E2E2E2;
+						li {
+							float: none;
+							width: 120px;
+							border-top: 2px solid #E2E2E2;
+							&:hover {
+								-webkit-transition-duration: 0.4s;
+								transition-duration: 0.4s;
+								background: #E2E2E2;
+								>a {
+									-webkit-transition-duration: 0.4s;
+									transition-duration: 0.4s;
+									color: #5E5E5E;
+								}
+							}
+							a {
+								height: 40px;
+								width: 120px;
+								line-height: 40px;
+								margin: 0;
+							}
+						}
+					}
+				}
+			}
     }
     @media only screen and (max-width: $large-mobile-width-threshold) {
       &:checked ~ .menu {
@@ -402,34 +418,39 @@ html, body {
   @media only screen and (max-width: $tablet-width-threshold) {
     .menu-icon {
       cursor: pointer;
-      display: inline-block;
-      float: right;
-      padding: 30.5px 15px;
-      position: relative;
-      user-select: none;
-      .navicon {
-        background: #E5E5E5;
-        display: block;
-        height: 4px;
-        position: relative;
-        transition: background .2s ease-out;
-        width: 36px;
-        &:before, &:after {
-          background: #E5E5E5;
-          content: '';
-          display: block;
-          height: 100%;
-          position: absolute;
-          transition: all .2s ease-out;
-          width: 100%;
-        }
-        &:before {
-          top: 10px;
-        }
-        &:after {
-          top: -10px;
-        }
-      }
+			display: inline-block;
+			float: right;
+			padding: 30.5px 15px;
+			position: relative;
+			user-select: none;
+			.navicon {
+				background: #E5E5E5;
+				display: block;
+				height: 4px;
+				position: relative;
+				transition: background .2s ease-out;
+				width: 36px;
+				&:before {
+					background: #E5E5E5;
+					content: '';
+					display: block;
+					height: 100%;
+					position: absolute;
+					transition: all .2s ease-out;
+					width: 100%;
+					top: 10px;
+				}
+				&:after {
+					background: #E5E5E5;
+					content: '';
+					display: block;
+					height: 100%;
+					position: absolute;
+					transition: all .2s ease-out;
+					width: 100%;
+					top: -10px;
+				}
+			}
     }
   }
 }
