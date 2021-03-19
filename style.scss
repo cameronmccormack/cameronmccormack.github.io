@@ -369,7 +369,7 @@ html, body {
         transition-duration: 0.4s;
         text-shadow: 0 0 5px #E2E2E2;
         @media only screen and (max-width: $tablet-width-threshold) {
-          display: none;
+          text-shadow: none;
         }
       }
     }
@@ -422,7 +422,7 @@ html, body {
 								-webkit-transition-duration: 0.4s;
 								transition-duration: 0.4s;
 								background: #E2E2E2;
-								>a {
+								> a {
 									-webkit-transition-duration: 0.4s;
 									transition-duration: 0.4s;
 									color: #5E5E5E;

@@ -409,7 +409,7 @@ html, body {
 }
 @media only screen and (max-width: 768px) {
   .header li a:hover {
-    display: none;
+    text-shadow: none;
   }
 }
 .header .mobile-social {
