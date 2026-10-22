@@ -1,0 +1,1343 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#bfe6ff">
+<title>Panel Packer</title>
+<style>
+:root{
+  --ink:#2b2140; --sky:#bfe6ff; --sky2:#eef9ff; --sun:#ffc93c; --panel:#1e4fd6;
+  --red:#ee4b4b; --green:#2fbf68; --btn:#ffd23f; --card:#fffaf0; --muted:#6d6383;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden}
+body{background:linear-gradient(#bfe6ff,#fff3dc);color:var(--ink);
+  font-family:ui-rounded,"SF Pro Rounded","Segoe UI Rounded","Arial Rounded MT Bold",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  -webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+#app{position:relative;margin:0 auto;max-width:560px;height:100vh;height:100dvh;overflow:hidden}
+.screen{position:absolute;inset:0;display:none;flex-direction:column}
+.screen.active{display:flex}
+button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
+.btn{border:3px solid var(--ink);border-radius:16px;background:var(--btn);font-weight:800;font-size:18px;padding:11px 18px;
+  box-shadow:0 4px 0 var(--ink);transition:transform .08s,box-shadow .08s;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;color:var(--ink)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+.btn.white{background:#fff}
+.btn.blue{background:#6fd0ff}
+.link{background:none;border:0;font-weight:700;color:var(--ink);text-decoration:underline;text-underline-offset:3px;padding:8px;font-size:15px}
+.iconbtn{width:40px;height:40px;border:3px solid var(--ink);border-radius:12px;background:#fff;font-size:18px;font-weight:900;display:grid;place-items:center;padding:0;box-shadow:0 3px 0 var(--ink);flex:none}
+.iconbtn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
+
+/* ---------- title ---------- */
+#title{align-items:center;justify-content:center;padding:16px;text-align:center;overflow-y:auto}
+#muteBtn{position:absolute;top:12px;right:12px}
+.title-art{width:min(250px,64vw);height:auto;display:block;margin:0 auto -6px}
+.logo{margin:0;font-size:clamp(40px,12vw,58px);line-height:.92;font-weight:900;letter-spacing:-1px;color:#fff;
+  -webkit-text-stroke:3px var(--ink);paint-order:stroke fill;text-shadow:0 5px 0 var(--ink)}
+.logo span{display:block}
+.logo span:last-child{color:var(--sun)}
+.pitch{max-width:320px;margin:14px auto 16px;font-size:16px;font-weight:600;line-height:1.35}
+.title-btns{display:flex;flex-direction:column;gap:12px;width:min(320px,100%)}
+.title-btns .btn{width:100%;flex-direction:column;gap:0}
+.btn small{font-size:13px;font-weight:700;opacity:.75}
+.status{font-weight:800;font-size:15px;min-height:0}
+.status:empty{display:none}
+.chips{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.chip{border:2.5px solid var(--ink);border-radius:10px;background:#fff;padding:4px 7px;font-size:12px;font-weight:800;line-height:1.1;min-width:52px}
+.chip span{display:block;font-size:11px;letter-spacing:-1px}
+.chip.next{background:#fff3b0}
+.by{position:absolute;bottom:10px;left:0;right:0;font-size:12px;color:var(--muted);font-weight:600}
+
+/* ---------- play ---------- */
+.hud{display:flex;align-items:center;gap:8px;padding:10px 12px 6px}
+.lvl{flex:1;min-width:0;line-height:1.1}
+.lvl div:first-child{font-weight:900;font-size:15px}
+.lvl div:last-child{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pill{border:3px solid var(--ink);border-radius:999px;background:#fff;padding:5px 10px;font-weight:900;font-size:16px;white-space:nowrap;box-shadow:0 3px 0 var(--ink)}
+.pill b{display:inline-block;min-width:1.4em;text-align:right;font-variant-numeric:tabular-nums}
+#scoreBox{background:#fff3b0}
+#scoreBox.bump{animation:bump .35s}
+#timer.pulse{background:#ffd0d0;animation:pulse 1s infinite}
+@keyframes bump{40%{transform:scale(1.18)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+.sunbar{display:flex;margin:4px 12px 6px;border:3px solid var(--ink);border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 3px 0 var(--ink)}
+.sunbar button{flex:1;border:0;background:none;padding:7px 2px;font-weight:800;font-size:14px;white-space:nowrap}
+.sunbar button+button{border-left:3px solid var(--ink)}
+.sunbar button.on{background:var(--sun)}
+#sceneWrap{position:relative;flex:1;min-height:0;overflow:hidden}
+#scene{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:visible;touch-action:none}
+#hint{text-align:center;font-size:13px;font-weight:700;color:var(--ink);padding:4px 12px;min-height:24px;background:#8fd16a}
+.tray{display:flex;align-items:center;gap:10px;padding:10px 12px calc(12px + env(safe-area-inset-bottom));background:var(--card);border-top:3px solid var(--ink);touch-action:none}
+.traypanels{flex:1;display:flex;align-items:center;justify-content:center;gap:10px;height:58px;border:3px dashed var(--ink);border-radius:16px;background:#e9f3ff;font-weight:900;font-size:22px;touch-action:none;padding:0 8px}
+.traypanels.picked{border-style:solid;background:#d6ffe4;animation:pulse 1s infinite}
+.traypanels.empty{opacity:.45}
+.traypanels.wiggle,.iconbtn.wiggle{animation:wiggle .4s}
+.stack{position:relative;width:46px;height:26px}
+.stack i{position:absolute;inset:0}
+.stack i:nth-child(1){transform:translate(4px,-4px)}
+.stack i:nth-child(2){transform:translate(2px,-2px)}
+.pv{display:block;border:3px solid var(--ink);border-radius:7px;background:
+  linear-gradient(135deg,rgba(255,255,255,.28) 0 28%,transparent 28%),
+  linear-gradient(90deg,transparent 24%,rgba(255,255,255,.55) 24% 26%,transparent 26% 49%,rgba(255,255,255,.55) 49% 51%,transparent 51% 74%,rgba(255,255,255,.55) 74% 76%,transparent 76%),
+  linear-gradient(0deg,transparent 47%,rgba(255,255,255,.55) 47% 53%,transparent 53%),var(--panel)}
+.pv.v{background:
+  linear-gradient(135deg,rgba(255,255,255,.28) 0 28%,transparent 28%),
+  linear-gradient(0deg,transparent 24%,rgba(255,255,255,.55) 24% 26%,transparent 26% 49%,rgba(255,255,255,.55) 49% 51%,transparent 51% 74%,rgba(255,255,255,.55) 74% 76%,transparent 76%),
+  linear-gradient(90deg,transparent 47%,rgba(255,255,255,.55) 47% 53%,transparent 53%),var(--panel)}
+#rotateBtn{width:58px;height:58px;border-radius:16px;flex-direction:column;gap:3px;font-size:13px}
+#rotateBtn .pv{width:24px;height:13px;border-width:2px;border-radius:4px;transition:transform .2s}
+#rotateBtn.vert .pv{transform:rotate(90deg)}
+#doneBtn{height:58px}
+#doneBtn.ready{background:#7ee29b;animation:pulse 1.2s infinite}
+#floater{position:fixed;left:0;top:0;pointer-events:none;z-index:40;opacity:.92;display:none;filter:drop-shadow(0 6px 4px rgba(0,0,0,.25))}
+
+/* inspector */
+#inspector{position:absolute;left:50%;bottom:6px;width:210px;margin-left:-105px;pointer-events:none;transform:translateY(130%);transition:transform .25s cubic-bezier(.3,1.5,.5,1);z-index:5}
+#inspector.show{transform:translateY(0)}
+#inspector svg{width:110px;display:block;margin:0 auto}
+#inspector .stamp{position:absolute;top:22px;left:50%;margin-left:-70px;width:140px;text-align:center;font-weight:900;font-size:30px;color:var(--red);border:5px solid var(--red);border-radius:10px;
+  background:rgba(255,255,255,.85);transform:rotate(-14deg) scale(3);opacity:0;transition:transform .2s .12s,opacity .2s .12s;letter-spacing:2px}
+#inspector.show .stamp{transform:rotate(-14deg) scale(1);opacity:1}
+#inspector .msg{background:#fff;border:3px solid var(--ink);border-radius:12px;font-weight:800;font-size:13px;text-align:center;padding:4px 6px;margin-top:-4px}
+
+/* svg bits */
+.pin{transform-box:fill-box;transform-origin:center}
+.pin.pop{animation:pop .38s cubic-bezier(.3,1.7,.5,1)}
+.pin.wiggle,.wiggle{animation:wiggle .4s}
+@keyframes pop{0%{transform:scale(.3)}100%{transform:scale(1)}}
+@keyframes wiggle{20%{transform:rotate(-7deg)}40%{transform:rotate(6deg)}60%{transform:rotate(-4deg)}80%{transform:rotate(3deg)}}
+#sun{transition:transform .7s cubic-bezier(.4,1.3,.5,1)}
+#sun .m-grin,#sun .m-sweat,#sun .drop{display:none}
+#sun.grin .m-happy,#sun.sweat .m-happy{display:none}
+#sun.grin .m-grin,#sun.sweat .m-sweat,#sun.sweat .drop{display:inline}
+.rays{transform-box:fill-box;transform-origin:center;animation:spin 14s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.cloud{animation:drift 46s linear infinite}
+@keyframes drift{from{transform:translateX(-160px)}to{transform:translateX(var(--dist))}}
+.smoke circle{transform-box:fill-box;transform-origin:center;animation:smoke 3s ease-out infinite;opacity:0}
+.smoke circle:nth-child(2){animation-delay:1s}.smoke circle:nth-child(3){animation-delay:2s}
+@keyframes smoke{0%{opacity:0;transform:translate(0,0) scale(.6)}20%{opacity:.8}100%{opacity:0;transform:translate(6px,-22px) scale(1.7)}}
+.zzz text{font-weight:900;font-size:10px;fill:var(--ink);animation:zz 2.4s ease-in infinite;opacity:0}
+.zzz text:nth-child(2){animation-delay:.8s}.zzz text:nth-child(3){animation-delay:1.6s}
+@keyframes zz{0%{opacity:0;transform:translate(0,0)}30%{opacity:1}100%{opacity:0;transform:translate(8px,-14px)}}
+.cat .yawn{display:none}
+.cat.yawning .yawn{display:inline}.cat.yawning .zzz,.cat.yawning .shut{display:none}
+.win{fill:#4d5f86;transition:fill .5s}
+.win.lit{fill:#ffe46b}
+.glow{opacity:0;transition:opacity .5s}
+.glow.lit{opacity:.85}
+.rise{animation:rise .9s ease-out forwards}
+@keyframes rise{0%{opacity:0;transform:translateY(4px)}20%{opacity:1}100%{opacity:0;transform:translateY(-26px)}}
+.pigeon.bob .body{animation:bob .6s ease-in-out infinite;transform-box:fill-box;transform-origin:bottom}
+@keyframes bob{50%{transform:rotate(-8deg)}}
+
+/* ---------- results ---------- */
+#results{overflow-y:auto;align-items:center;padding:16px 16px 28px;text-align:center}
+.res-tag{font-weight:900;font-size:15px;margin-top:4px}
+.res-tag small{display:block;font-weight:700;color:var(--muted);font-size:13px}
+.stars{display:flex;justify-content:center;gap:6px;height:74px;margin:8px 0 2px}
+.star{width:66px;height:66px;opacity:0;transform:scale(.2)}
+.star.in{animation:starIn .45s cubic-bezier(.3,1.7,.5,1) forwards}
+.star:nth-child(2){margin-top:-8px}
+@keyframes starIn{to{opacity:1;transform:scale(1)}}
+#resLine{margin:4px 0 8px;font-size:22px;font-weight:900;line-height:1.15}
+.res-scores{font-weight:800;font-size:17px;line-height:1.5}
+.res-scores .muted{color:var(--muted);font-size:14px}
+.newbest{display:inline-block;background:#ff7eb6;color:#fff;border:2.5px solid var(--ink);border-radius:999px;padding:1px 10px;font-size:13px;font-weight:900;margin-left:4px;transform:rotate(-4deg)}
+.minis{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin:14px 0}
+.minis figure{margin:0;background:var(--card);border:3px solid var(--ink);border-radius:16px;padding:8px 6px 6px;box-shadow:0 3px 0 var(--ink)}
+.minis figcaption{font-weight:900;font-size:14px;margin-bottom:4px}
+.minis figcaption small{display:block;font-weight:700;color:var(--muted);font-size:12px}
+.minis svg{width:100%;height:auto;display:block;overflow:visible}
+.drop{animation:dropIn .35s cubic-bezier(.3,1.5,.5,1) both}
+@keyframes dropIn{from{opacity:0;transform:translateY(-26px)}to{opacity:1;transform:translateY(0)}}
+.res-btns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;width:100%}
+.res-btns .btn{padding:11px 4px;font-size:16px}
+.cta{width:100%;margin-top:14px;background:#6fd0ff;font-size:16px;line-height:1.25;padding:13px 14px}
+
+/* ---------- overlays ---------- */
+.overlay{position:fixed;inset:0;background:rgba(43,33,64,.55);display:none;align-items:center;justify-content:center;z-index:30;padding:16px}
+.overlay.show{display:flex}
+.sheet{background:var(--card);border:3px solid var(--ink);border-radius:20px;box-shadow:0 5px 0 var(--ink);width:min(420px,100%);max-height:100%;overflow-y:auto;padding:16px;text-align:center}
+.sheet h2{margin:0 0 10px;font-size:24px;font-weight:900}
+.how{display:flex;align-items:center;gap:12px;text-align:left;background:#fff;border:3px solid var(--ink);border-radius:14px;padding:8px 10px;margin-bottom:10px}
+.how svg{width:104px;flex:none}
+.how p{margin:0;font-size:14px;font-weight:600;line-height:1.3}
+.how b{font-weight:900}
+.how .n{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--sun);border:2px solid var(--ink);font-weight:900;font-size:13px;margin-right:4px}
+#toast{position:fixed;left:50%;bottom:110px;transform:translate(-50%,20px);background:var(--ink);color:#fff;font-weight:800;padding:9px 16px;border-radius:999px;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;z-index:60;max-width:calc(100% - 32px);text-align:center;font-size:14px}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
+
+@media (max-height:600px){ .title-art{width:170px} .pitch{margin:8px auto} }
+@media (prefers-reduced-motion:reduce){
+  .pin.pop{animation:pop .2s ease-out}
+  @keyframes pop{0%{transform:scale(.85)}100%{transform:scale(1)}}
+  .rays,.cloud,.smoke circle,.zzz text,.pigeon.bob .body,#timer.pulse,.traypanels.picked,#doneBtn.ready{animation:none}
+  .zzz text{opacity:.8}
+  .star.in{animation:fadeIn .3s forwards}
+  .drop{animation:fadeIn .3s both}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1;transform:none}}
+  #sun{transition-duration:.2s}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- TITLE -->
+  <section id="title" class="screen active">
+    <button id="muteBtn" class="iconbtn" aria-label="Toggle sound">🔊</button>
+    <svg class="title-art" viewBox="0 0 260 175" aria-hidden="true">
+      <g style="transform:translate(205px,42px)"><g class="rays">
+        <g stroke="#2b2140" stroke-width="4" stroke-linecap="round"><path d="M0-34v-8M0 34v8M-34 0h-8M34 0h8M24-24l6-6M-24 24l-6 6M24 24l6 6M-24-24l-6-6"/></g></g>
+        <circle r="25" fill="#ffc93c" stroke="#2b2140" stroke-width="4"/>
+        <circle cx="-8" cy="-5" r="3" fill="#2b2140"/><circle cx="8" cy="-5" r="3" fill="#2b2140"/>
+        <circle cx="-14" cy="5" r="4" fill="#ff8f7a" opacity=".6"/><circle cx="14" cy="5" r="4" fill="#ff8f7a" opacity=".6"/>
+        <path d="M-10 5q10 12 20 0z" fill="#2b2140"/>
+      </g>
+      <ellipse cx="128" cy="165" rx="125" ry="12" fill="#8fd16a" stroke="#2b2140" stroke-width="3"/>
+      <rect x="62" y="96" width="132" height="66" rx="6" fill="#ffe1a8" stroke="#2b2140" stroke-width="4"/>
+      <rect x="114" y="122" width="28" height="40" rx="4" fill="#c46b3c" stroke="#2b2140" stroke-width="3.5"/>
+      <rect x="76" y="110" width="24" height="22" rx="4" fill="#ffe46b" stroke="#2b2140" stroke-width="3"/>
+      <rect x="156" y="110" width="24" height="22" rx="4" fill="#ffe46b" stroke="#2b2140" stroke-width="3"/>
+      <path d="M44 100L84 46h88l40 54z" fill="#e7794f" stroke="#2b2140" stroke-width="4" stroke-linejoin="round"/>
+      <g stroke="#2b2140" stroke-width="3" fill="#1e4fd6">
+        <rect x="80" y="58" width="30" height="16" rx="3"/><rect x="113" y="58" width="30" height="16" rx="3"/><rect x="146" y="58" width="30" height="16" rx="3"/>
+        <rect x="70" y="78" width="34" height="16" rx="3"/><rect x="152" y="78" width="34" height="16" rx="3"/>
+      </g>
+      <g stroke="#fff" stroke-width="1.5" opacity=".6"><path d="M95 58v16M128 58v16M161 58v16M87 78v16M169 78v16"/></g>
+    </svg>
+    <h1 class="logo"><span>Panel</span><span>Packer</span></h1>
+    <p class="pitch" id="pitch"></p>
+    <div class="title-btns">
+      <button id="playDaily" class="btn">Play today's roof<small id="dailyLabel"></small></button>
+      <div id="dailyStatus" class="status"></div>
+      <button id="playPractice" class="btn white">Practice<small id="practiceLabel"></small></button>
+      <div id="chips" class="chips"></div>
+    </div>
+    <button id="howBtn" class="link">How to play</button>
+    <div class="by">A tiny sunny game by <b class="product"></b></div>
+  </section>
+
+  <!-- PLAY -->
+  <section id="play" class="screen">
+    <div class="hud">
+      <button id="homeBtn" class="iconbtn" aria-label="Back to title">⌂</button>
+      <div class="lvl"><div id="lvlTag"></div><div id="lvlName"></div></div>
+      <div id="timer" class="pill" aria-label="Time left">⏱ <b id="timeVal">60</b></div>
+      <div id="scoreBox" class="pill" aria-label="Score">☀️ <b id="scoreVal">0</b></div>
+    </div>
+    <div class="sunbar" id="sunbar">
+      <button data-sun="1">🌅 Morning</button><button data-sun="2" class="on">☀️ Noon</button><button data-sun="4">🌇 Evening</button>
+    </div>
+    <div id="sceneWrap">
+      <svg id="scene" aria-label="Roof"></svg>
+      <div id="inspector" aria-hidden="true">
+        <svg viewBox="0 0 110 90">
+          <rect x="30" y="58" width="50" height="40" rx="12" fill="#ff9f43" stroke="#2b2140" stroke-width="3.5"/>
+          <path d="M42 60l13 14 13-14" fill="none" stroke="#fff" stroke-width="4"/>
+          <circle cx="55" cy="42" r="20" fill="#ffd7b5" stroke="#2b2140" stroke-width="3.5"/>
+          <path d="M33 34q22-26 44 0z" fill="#ffd23f" stroke="#2b2140" stroke-width="3.5" stroke-linejoin="round"/>
+          <rect x="29" y="31" width="52" height="6" rx="3" fill="#ffd23f" stroke="#2b2140" stroke-width="3"/>
+          <circle cx="48" cy="44" r="2.5" fill="#2b2140"/><circle cx="62" cy="44" r="2.5" fill="#2b2140"/>
+          <path d="M44 39l7 2M66 39l-7 2" stroke="#2b2140" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M45 53q10-6 20 0" fill="#6b4226" stroke="#2b2140" stroke-width="2.5"/>
+          <rect x="76" y="56" width="22" height="28" rx="3" fill="#fff" stroke="#2b2140" stroke-width="3" transform="rotate(12 87 70)"/>
+        </svg>
+        <div class="stamp">DENIED</div>
+        <div class="msg">Fire setback! Firefighters need that path clear. 🚒</div>
+      </div>
+    </div>
+    <div id="hint"></div>
+    <div class="tray">
+      <button id="trayBtn" class="traypanels" aria-label="Panels left: drag onto the roof, or tap then tap the roof">
+        <span class="stack"><i class="pv"></i><i class="pv"></i><i class="pv"></i></span><span id="trayCount">× 0</span>
+      </button>
+      <button id="rotateBtn" class="btn white" aria-label="Rotate new panels"><span class="pv"></span>Rotate</button>
+      <button id="doneBtn" class="btn">Done!</button>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="results" class="screen">
+    <div class="res-tag" id="resTag"></div>
+    <div class="stars" id="stars"></div>
+    <h2 id="resLine"></h2>
+    <div class="res-scores">
+      <div>Your score: <b id="resYou">0</b> ☀️<span id="resNew"></span></div>
+      <div>Best possible: <b id="resBest">0</b> ☀️</div>
+      <div class="muted" id="resTime"></div>
+    </div>
+    <div class="minis">
+      <figure><figcaption>Your roof<small id="miniYouScore"></small></figcaption><svg id="miniYou"></svg></figure>
+      <figure><figcaption>The best roof<small id="miniBestScore"></small></figcaption><svg id="miniBest"></svg></figure>
+    </div>
+    <div class="res-btns">
+      <button id="shareBtn" class="btn">Share</button>
+      <button id="retryBtn" class="btn white">Retry</button>
+      <button id="nextBtn" class="btn white">Next roof</button>
+    </div>
+    <a id="cta" class="btn cta" target="_blank" rel="noopener"></a>
+    <button id="resHome" class="link">Back to title</button>
+  </section>
+</div>
+
+<!-- HOW TO PLAY -->
+<div id="howto" class="overlay" role="dialog" aria-modal="true" aria-labelledby="howTitle">
+  <div class="sheet">
+    <h2 id="howTitle">How to play</h2>
+    <div class="how">
+      <svg viewBox="0 0 120 80" aria-hidden="true">
+        <rect x="6" y="6" width="80" height="44" rx="8" fill="#2b2140"/>
+        <rect x="9" y="9" width="36" height="38" rx="6" fill="#e7794f"/><rect x="47" y="9" width="36" height="38" rx="6" fill="#e7794f"/>
+        <rect x="12" y="12" width="68" height="32" rx="6" fill="#fff" fill-opacity=".35" stroke="#2fbf68" stroke-width="3.5" stroke-dasharray="6 4"/>
+        <rect x="58" y="56" width="52" height="20" rx="5" fill="#1e4fd6" stroke="#2b2140" stroke-width="3"/>
+        <path d="M71 56v20M84 56v20M97 56v20" stroke="#fff" stroke-width="1.5" opacity=".6"/>
+        <path d="M60 62q-20 0-24-12" fill="none" stroke="#2b2140" stroke-width="3" stroke-linecap="round"/><path d="M30 52l6-4 3 7" fill="none" stroke="#2b2140" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <p><span class="n">1</span><b>Drag panels onto the roof.</b> Tap one to rotate it; drag it off to remove. You only get a few — pick the best spots!</p>
+    </div>
+    <div class="how">
+      <svg viewBox="0 0 120 80" aria-hidden="true">
+        <rect x="4" y="18" width="34" height="34" rx="6" fill="#e7794f" stroke="#2b2140" stroke-width="3"/>
+        <rect x="43" y="18" width="34" height="34" rx="6" fill="#e9b872" stroke="#2b2140" stroke-width="3"/>
+        <rect x="82" y="18" width="34" height="34" rx="6" fill="#8797b2" stroke="#2b2140" stroke-width="3"/>
+        <g font-weight="900" font-size="15" text-anchor="middle" fill="#2b2140"><text x="21" y="41">9</text><text x="60" y="41">6</text><text x="99" y="41">3</text></g>
+        <g stroke="#2b2140" stroke-width="2"><circle cx="21" cy="66" r="8" fill="#ffc93c"/><circle cx="60" cy="66" r="7" fill="#ffc93c"/><circle cx="99" cy="66" r="6" fill="#ffc93c"/></g>
+        <path d="M17 67q4 4 8 0M57 67.5q3 2 6 0M96 69q3-3 6 0" fill="none" stroke="#2b2140" stroke-width="1.8" stroke-linecap="round"/>
+        <g font-size="10" font-weight="800" text-anchor="middle" fill="#2b2140"><text x="21" y="12">sunny</text><text x="60" y="12">side</text><text x="99" y="12">gloomy</text></g>
+      </svg>
+      <p><span class="n">2</span><b>Sunny faces score more.</b> Each panel cell scores for morning, noon <i>and</i> evening: ☀️9 sunny, 6 side, 3 gloomy.</p>
+    </div>
+    <div class="how">
+      <svg viewBox="0 0 120 80" aria-hidden="true">
+        <rect x="4" y="24" width="76" height="40" rx="7" fill="#e7794f" stroke="#2b2140" stroke-width="3"/>
+        <rect x="10" y="30" width="64" height="28" rx="5" fill="#1e4fd6" stroke="#2b2140" stroke-width="3"/>
+        <ellipse cx="58" cy="44" rx="26" ry="20" fill="#2b2140" opacity=".35"/>
+        <circle cx="58" cy="44" r="7" fill="#cfe3ff" stroke="#2b2140" stroke-width="2"/><path d="M55 47.5q3-3 6 0" fill="none" stroke="#2b2140" stroke-width="1.6"/><circle cx="55.5" cy="42.5" r="1.2" fill="#2b2140"/><circle cx="60.5" cy="42.5" r="1.2" fill="#2b2140"/>
+        <rect x="96" y="36" width="9" height="40" rx="3" fill="#9b6a43" stroke="#2b2140" stroke-width="3"/>
+        <circle cx="100" cy="26" r="18" fill="#5cbf5a" stroke="#2b2140" stroke-width="3"/>
+      </svg>
+      <p><span class="n">3</span><b>Avoid the shade!</b> Use the 🌅☀️🌇 slider to see shadows. Keep off the fire setbacks 🚒 — and tap the cat if it's in the way.</p>
+    </div>
+    <button id="howClose" class="btn">Got it!</button>
+  </div>
+</div>
+
+<div id="floater"><span class="pv"></span></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<canvas id="confetti"></canvas>
+
+<script>
+"use strict";
+const CONFIG = {
+  productName: "Spruce",
+  ctaText: "Designing real roofs? Spruce makes it this easy →",
+  ctaUrl: "https://www.spruce.eco/",
+  gameUrl: "https://cameronmccormack.github.io/",
+  roundSeconds: 60,
+};
+
+// #region core — levels, scoring & solver (pure JS, no DOM; also loaded by the Node test harness)
+/*
+  Level format: { name, panels, roof: [...rows], shade?: [...rows], cat?: [x,y], catAlt?: [x,y], tree?: "left"|"right" }
+  roof:  . not roof | S sunny | E/W side | N gloomy | F fire setback | C chimney | V vent | K skylight
+  shade: one digit per cell, a bitmask of the sun positions that shade it (1 morning, 2 noon, 4 evening).
+  Coordinates are [col,row], zero-indexed.
+*/
+const LEVELS = [
+  { name: "Garden Shed",
+    panels: 8, // was 6: with 6, any 6 placements scored the max. 8 needs a near-perfect packing around the chimney.
+    roof: [
+      "SSSSSS",
+      "SSCSSS",
+      "SSSSSS",
+    ] },
+  { name: "Classic Gable", panels: 8,
+    roof: [
+      "FFFFFFFF",
+      "FSSSSSSF",
+      "FSSVSSSF",
+      "FFFFFFFF",
+      "FNNNNNNF",
+      "FNNNNNNF",
+      "FFFFFFFF",
+    ] },
+  { name: "The Big Oak", panels: 7, tree: "right",
+    roof: [
+      "EEEESSSS",
+      "EEEESSSS",
+      "EKEESSSS",
+      "EEEESSCS",
+    ],
+    shade: [
+      "00000011",
+      "00000113",
+      "00000133",
+      "00000011",
+    ] },
+  { name: "Cat Nap",
+    panels: 11, // was 9: with 9, every sunny spot fit with room to spare and the cat never mattered. 11 means you have to move the cat.
+    cat: [3, 1], catAlt: [1, 2],
+    roof: [
+      "..SSSSSS..",
+      ".WSSSSSSE.",
+      "WWSSKSSSEE",
+      "WWSSSSSSEE",
+    ] },
+  { name: "Monster House", panels: 10, tree: "left", cat: [7, 3], catAlt: [6, 5],
+    roof: [
+      "FFFFFFFFFF",
+      "FSSCSSSSSF",
+      "FSSSSKKSSF",
+      "FSSSSSSSSF",
+      "FFFFFFFFFF",
+      "FWWWWEEEEF",
+      "FWVWWEEEVF",
+      "FFFFFFFFFF",
+    ],
+    shade: [
+      "0000000000",
+      "0440000000",
+      "0440000000",
+      "0400000000",
+      "0000000000",
+      "0000000000",
+      "0000000000",
+      "0000000000",
+    ] },
+];
+
+const BASE = { S: 3, E: 2, W: 2, N: 1 };   // points per panel cell, per unshaded sun position
+const SUNS = [
+  { bit: 1, label: "Morning" },
+  { bit: 2, label: "Noon" },
+  { bit: 4, label: "Evening" },
+];
+const OBSTACLES = "CVK";
+const isBuildable = t => Object.prototype.hasOwnProperty.call(BASE, t);
+const nowMs = () => (typeof performance !== "undefined" ? performance.now() : Date.now());
+
+function prepLevel(def, index) {
+  const h = def.roof.length;
+  const w = Math.max(...def.roof.map(r => r.length));
+  const grid = def.roof.map(r => r.padEnd(w, ".").split(""));
+  const shade = grid.map((row, y) => row.map((_, x) => +((def.shade && def.shade[y] || "")[x] || 0)));
+  const L = { ...def, index, w, h, grid, shade };
+  L.value = grid.map((row, y) => row.map((t, x) => cellValue(L, x, y)));
+  return L;
+}
+
+function cellValue(L, x, y) {
+  const base = BASE[L.grid[y][x]] || 0;
+  let v = 0;
+  for (const s of SUNS) if (!(L.shade[y][x] & s.bit)) v += base;
+  return v;
+}
+
+function cellsOf(x, y, o) {
+  return o === "h" ? [[x, y], [x + 1, y]] : [[x, y], [x, y + 1]];
+}
+
+// Every valid domino placement, ignoring other panels. blocked: Set of "x,y" keys (e.g. the cat).
+function listDominoes(L, blocked) {
+  const out = [];
+  for (let y = 0; y < L.h; y++) for (let x = 0; x < L.w; x++) for (const o of ["h", "v"]) {
+    const [[ax, ay], [bx, by]] = cellsOf(x, y, o);
+    if (bx >= L.w || by >= L.h) continue;
+    const t = L.grid[ay][ax];
+    if (!isBuildable(t) || L.grid[by][bx] !== t) continue;
+    if (blocked.has(ax + "," + ay) || blocked.has(bx + "," + by)) continue;
+    out.push({ x, y, o, a: ay * L.w + ax, b: by * L.w + bx, v: L.value[ay][ax] + L.value[by][bx] });
+  }
+  return out;
+}
+
+// Depth-first branch-and-bound over dominoes sorted by value. The bound is the smaller of
+// (a) the next r free domino values and (b) the 2r most valuable free cells.
+function solveFor(L, blocked) {
+  const doms = listDominoes(L, blocked).sort((p, q) => q.v - p.v);
+  const cellVal = new Int32Array(L.w * L.h);
+  const seen = new Set();
+  for (const d of doms) { seen.add(d.a); seen.add(d.b); }
+  const cells = [...seen].sort((p, q) => L.value[Math.floor(q / L.w)][q % L.w] - L.value[Math.floor(p / L.w)][p % L.w]);
+  for (const c of cells) cellVal[c] = L.value[Math.floor(c / L.w)][c % L.w];
+  const used = new Uint8Array(L.w * L.h);
+  const cur = [];
+  let best = 0, bestSet = [], nodes = 0;
+
+  const bound = (i, r) => {
+    let s1 = 0, n1 = 0;
+    for (let j = i; j < doms.length && n1 < r; j++) { const d = doms[j]; if (!used[d.a] && !used[d.b]) { s1 += d.v; n1++; } }
+    let s2 = 0, n2 = 0;
+    for (let j = 0; j < cells.length && n2 < 2 * r; j++) if (!used[cells[j]]) { s2 += cellVal[cells[j]]; n2++; }
+    return Math.min(s1, s2);
+  };
+  const dfs = (i, score, r) => {
+    nodes++;
+    if (score > best) { best = score; bestSet = cur.slice(); }
+    if (r === 0) return;
+    for (let j = i; j < doms.length; j++) {
+      const d = doms[j];
+      if (used[d.a] || used[d.b]) continue;
+      if (score + bound(j, r) <= best) return; // bound only shrinks as j grows
+      used[d.a] = used[d.b] = 1; cur.push(d);
+      dfs(j + 1, score + d.v, r - 1);
+      cur.pop(); used[d.a] = used[d.b] = 0;
+    }
+  };
+  dfs(0, 0, L.panels);
+  return { score: best, panels: bestSet.map(d => ({ x: d.x, y: d.y, o: d.o })), nodes };
+}
+
+// Optimal layout for a level; with a cat, try both of its spots and keep the better one.
+function solveLevel(L) {
+  const t0 = nowMs();
+  const spots = L.cat ? [L.cat, L.catAlt] : [null];
+  let best = null;
+  for (const c of spots) {
+    const r = solveFor(L, new Set(c ? [c.join(",")] : []));
+    if (!best || r.score > best.score) best = { ...r, cat: c };
+  }
+  best.ms = nowMs() - t0;
+  return best;
+}
+
+function scoreLayout(L, panels) {
+  let s = 0;
+  for (const p of panels) for (const [x, y] of cellsOf(p.x, p.y, p.o)) s += L.value[y][x];
+  return s;
+}
+// #endregion core
+
+/* ================================================================ */
+/*  Game                                                            */
+/* ================================================================ */
+const $ = s => document.querySelector(s);
+const INK = "#2b2140";
+const FACE_FILL = { S: "#e7794f", E: "#e9b872", W: "#e9b872", N: "#8797b2" };
+const CS = 40, SKY = 80, WALL = 86, GROUND = 30, MARGIN = 36, TREE_M = 70;
+const RM = (() => { try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; } })();
+const DEV = location.protocol === "file:" || /^(localhost|127\.0\.0\.1)$/.test(location.hostname) || /[?&]dev\b/.test(location.search);
+const LV = LEVELS.map(prepLevel);
+const OPT = [];
+const getOpt = i => OPT[i] || (OPT[i] = solveLevel(LV[i]));
+
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* storage unavailable */ } },
+};
+
+/* ---------- sound (Web Audio, synthesized) ---------- */
+let AC = null, master = null, muted = !!store.get("pp:mute", false);
+function audio() {
+  if (muted) return null;
+  try {
+    if (!AC) {
+      const C = window.AudioContext || window.webkitAudioContext;
+      if (!C) return null;
+      AC = new C(); master = AC.createGain(); master.gain.value = 0.55; master.connect(AC.destination);
+    }
+    if (AC.state === "suspended") AC.resume();
+  } catch (e) { return null; }
+  return AC;
+}
+function tone(f, at, dur, { type = "sine", vol = 0.18, to = null } = {}) {
+  const a = audio(); if (!a) return;
+  const o = a.createOscillator(), g = a.createGain(), t = a.currentTime + at;
+  o.type = type; o.frequency.setValueAtTime(f, t);
+  if (to) o.frequency.exponentialRampToValueAtTime(to, t + dur);
+  g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + 0.008); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o.connect(g); g.connect(master); o.start(t); o.stop(t + dur + 0.05);
+}
+function noise(at, dur, vol) {
+  const a = audio(); if (!a) return;
+  const len = Math.floor(a.sampleRate * dur), buf = a.createBuffer(1, len, a.sampleRate), d = buf.getChannelData(0);
+  for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
+  const s = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain();
+  s.buffer = buf; f.type = "lowpass"; f.frequency.value = 900; g.gain.value = vol;
+  s.connect(f); f.connect(g); g.connect(master); s.start(a.currentTime + at);
+}
+const sfx = {
+  ui: () => tone(880, 0, 0.06, { type: "triangle", vol: 0.08 }),
+  pick: () => tone(520, 0, 0.09, { type: "triangle", to: 820, vol: 0.12 }),
+  clink: () => { tone(1320, 0, 0.12, { type: "triangle", vol: 0.16 }); tone(1980, 0.035, 0.16, { vol: 0.1 }); },
+  rotate: () => tone(700, 0, 0.08, { type: "triangle", to: 1050, vol: 0.12 }),
+  remove: () => tone(620, 0, 0.18, { to: 240, vol: 0.14 }),
+  nope: () => { tone(230, 0, 0.09, { type: "square", vol: 0.06 }); tone(165, 0.1, 0.13, { type: "square", vol: 0.06 }); },
+  stamp: () => { noise(0, 0.12, 0.5); tone(110, 0, 0.22, { to: 55, vol: 0.35 }); },
+  meow: () => {
+    const a = audio(); if (!a) return;
+    const o = a.createOscillator(), g = a.createGain(), t = a.currentTime;
+    o.type = "sawtooth"; o.frequency.setValueAtTime(520, t); o.frequency.linearRampToValueAtTime(820, t + 0.15); o.frequency.linearRampToValueAtTime(480, t + 0.42);
+    const f = a.createBiquadFilter(); f.type = "lowpass"; f.frequency.value = 1600;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.09, t + 0.05); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.45);
+    o.connect(f); f.connect(g); g.connect(master); o.start(t); o.stop(t + 0.5);
+  },
+  tick: () => tone(1050, 0, 0.035, { type: "square", vol: 0.035 }),
+  star: i => { const f = [660, 880, 1175][i]; tone(f, 0, 0.3, { type: "triangle", vol: 0.16 }); tone(f * 2, 0.05, 0.25, { vol: 0.05 }); },
+  fanfare: () => [523, 659, 784, 1047].forEach((f, i) => tone(f, i * 0.09, 0.28, { type: "triangle", vol: 0.13 })),
+  whistle: () => tone(900, 0, 0.35, { to: 500, type: "triangle", vol: 0.1 }),
+};
+
+/* ---------- small helpers ---------- */
+let toastTimer = 0;
+function toast(msg, ms = 1600) {
+  const t = $("#toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("show"), ms);
+}
+function retrigger(el, cls) { el.classList.remove(cls); void el.getBoundingClientRect(); el.classList.add(cls); }
+function show(id) { document.querySelectorAll(".screen").forEach(s => s.classList.toggle("active", s.id === id)); }
+const starStr = n => "⭐".repeat(n) + "☆".repeat(3 - n);
+const keyOf = (x, y) => x + "," + y;
+function dailyInfo(d = new Date()) {
+  const days = Math.floor((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(2026, 0, 1)) / 864e5);
+  const pad = n => String(n).padStart(2, "0");
+  return { num: days + 1, idx: ((days % LV.length) + LV.length) % LV.length, key: `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}` };
+}
+
+/* ---------- SVG art ---------- */
+function defs(pre) {
+  return `<defs>
+    <pattern id="${pre}stripes" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="12" height="12" fill="#ffe0d6"/><rect width="6" height="12" fill="#ee4b4b"/></pattern>
+    <filter id="${pre}soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="5"/></filter>
+    <filter id="${pre}glow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="5"/></filter>
+  </defs>`;
+}
+
+function tilesMarkup(L, ox, oy, pre, mini) {
+  let slab = "", s = "", trucks = 0;
+  const fCells = [];
+  for (let y = 0; y < L.h; y++) for (let x = 0; x < L.w; x++) {
+    const t = L.grid[y][x]; if (t === ".") continue;
+    const X = ox + x * CS, Y = oy + y * CS;
+    slab += `<rect x="${X - 3}" y="${Y - 3}" width="${CS + 6}" height="${CS + 6}" rx="10" fill="${INK}"/>`;
+    if (isBuildable(t)) {
+      s += `<rect x="${X + 2}" y="${Y + 2}" width="${CS - 4}" height="${CS - 4}" rx="6" fill="${FACE_FILL[t]}" stroke="${INK}" stroke-width="2"/>`;
+      if (!mini) s += `<path d="M${X + 8} ${Y + 26}h${CS - 16}" stroke="rgba(43,33,64,.16)" stroke-width="2.5" stroke-linecap="round"/>`;
+    } else if (t === "F") {
+      s += `<rect x="${X + 2}" y="${Y + 2}" width="${CS - 4}" height="${CS - 4}" rx="6" fill="url(#${pre}stripes)" stroke="${INK}" stroke-width="2"/>`;
+      fCells.push([X, Y, x, y]);
+    } else {
+      s += `<rect x="${X + 2}" y="${Y + 2}" width="${CS - 4}" height="${CS - 4}" rx="6" fill="#cbbba8" stroke="${INK}" stroke-width="2"/>`;
+      if (t === "C") {
+        s += `<rect x="${X + 8}" y="${Y + 6}" width="24" height="28" rx="3" fill="#c8553d" stroke="${INK}" stroke-width="3"/>
+          <rect x="${X + 5}" y="${Y + 3}" width="30" height="8" rx="3" fill="#8f3a2a" stroke="${INK}" stroke-width="3"/>
+          <path d="M${X + 10} ${Y + 18}h20M${X + 10} ${Y + 26}h20M${X + 20} ${Y + 11}v7M${X + 15} ${Y + 18}v8M${X + 25} ${Y + 18}v8" stroke="${INK}" stroke-width="1.5" opacity=".5"/>`;
+        if (!mini) s += `<g class="smoke" fill="#fff" stroke="${INK}" stroke-width="1.5"><circle cx="${X + 20}" cy="${Y + 1}" r="4"/><circle cx="${X + 18}" cy="${Y + 1}" r="4"/><circle cx="${X + 22}" cy="${Y + 1}" r="4"/></g>`;
+      } else if (t === "V") {
+        s += `<circle cx="${X + 20}" cy="${Y + 20}" r="12" fill="#b9c3cf" stroke="${INK}" stroke-width="3"/>
+          <path d="M${X + 13} ${Y + 16}h14M${X + 12} ${Y + 20}h16M${X + 13} ${Y + 24}h14" stroke="${INK}" stroke-width="2" stroke-linecap="round"/>`;
+      } else if (t === "K") {
+        s += `<rect x="${X + 6}" y="${Y + 6}" width="28" height="28" rx="4" fill="#9ee6ff" stroke="${INK}" stroke-width="3"/>
+          <path d="M${X + 11} ${Y + 22}l9-9M${X + 15} ${Y + 28}l13-13" stroke="#fff" stroke-width="3" stroke-linecap="round"/>`;
+      }
+    }
+  }
+  if (!mini) {
+    const pick = fCells.filter(([, , x, y]) => (x * 5 + y * 3) % 7 === 0);
+    if (!pick.length && fCells.length) pick.push(fCells[0]);
+    for (const [X, Y] of pick) { trucks++; s += `<circle cx="${X + 20}" cy="${Y + 20}" r="11" fill="#fff" stroke="${INK}" stroke-width="2"/><text x="${X + 20}" y="${Y + 25}" font-size="13" text-anchor="middle">🚒</text>`; }
+  }
+  return slab + s;
+}
+
+function badgesMarkup(L, ox, oy) {
+  const seen = new Set(); let s = "";
+  const ARROW = { S: 0, W: 90, N: 180, E: -90 };
+  const MOUTH = { S: "M-3 .8q3 3.4 6 0", E: "M-2.5 1.6q2.5 1.6 5 0", W: "M-2.5 1.6q2.5 1.6 5 0", N: "M-2.8 3q2.8-2.8 5.6 0" };
+  for (let y = 0; y < L.h; y++) for (let x = 0; x < L.w; x++) {
+    const t = L.grid[y][x];
+    if (!isBuildable(t) || seen.has(keyOf(x, y))) continue;
+    const stack = [[x, y]]; seen.add(keyOf(x, y));
+    while (stack.length) {
+      const [cx, cy] = stack.pop();
+      for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+        const nx = cx + dx, ny = cy + dy;
+        if (nx < 0 || ny < 0 || nx >= L.w || ny >= L.h || L.grid[ny][nx] !== t || seen.has(keyOf(nx, ny))) continue;
+        seen.add(keyOf(nx, ny)); stack.push([nx, ny]);
+      }
+    }
+    const X = ox + x * CS + 4, Y = oy + y * CS + 4;
+    s += `<g transform="translate(${X},${Y})"><rect width="32" height="17" rx="8.5" fill="#fff" stroke="${INK}" stroke-width="2"/>
+      <path transform="translate(9,8.5) rotate(${ARROW[t]})" d="M0-5V4M-3.5 0.5L0 4.5 3.5 0.5" fill="none" stroke="${INK}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <g transform="translate(23,8.5)"><circle r="5.6" fill="${t === "N" ? "#ffe39a" : "#ffc93c"}" stroke="${INK}" stroke-width="1.6"/>
+      <circle cx="-2" cy="-1.4" r=".9" fill="${INK}"/><circle cx="2" cy="-1.4" r=".9" fill="${INK}"/>
+      <path d="${MOUTH[t]}" fill="none" stroke="${INK}" stroke-width="1.3" stroke-linecap="round"/></g></g>`;
+  }
+  return s;
+}
+
+function panelMarkup(X, Y, o, cls = "", extra = "") {
+  const w = o === "h" ? CS * 2 : CS, h = o === "h" ? CS : CS * 2;
+  let grid = "";
+  if (o === "h") { for (let i = 1; i < 4; i++) grid += `M${3 + (w - 6) * i / 4} 5V${h - 5}`; grid += `M5 ${h / 2}H${w - 5}`; }
+  else { for (let i = 1; i < 4; i++) grid += `M5 ${3 + (h - 6) * i / 4}H${w - 5}`; grid += `M${w / 2} 5V${h - 5}`; }
+  return `<g transform="translate(${X},${Y})" ${extra}><g class="pin ${cls}">
+    <rect x="3" y="3" width="${w - 6}" height="${h - 6}" rx="6" fill="#1e4fd6" stroke="${INK}" stroke-width="3"/>
+    <path d="${grid}" stroke="#fff" stroke-width="1.4" opacity=".55"/>
+    <path d="M6 6H${Math.min(w, h) * .9}L6 ${Math.min(w, h) * .9}Z" fill="#fff" opacity=".2"/>
+    <rect x="3" y="3" width="${w - 6}" height="${h - 6}" rx="6" fill="none" stroke="${INK}" stroke-width="3"/></g></g>`;
+}
+
+const CAT_INNER = `
+  <path d="M33 30q9-1 6-11" fill="none" stroke="${INK}" stroke-width="6" stroke-linecap="round"/>
+  <path d="M33 30q9-1 6-11" fill="none" stroke="#f6a04d" stroke-width="2.6" stroke-linecap="round"/>
+  <ellipse cx="23" cy="28" rx="14" ry="9" fill="#f6a04d" stroke="${INK}" stroke-width="2.5"/>
+  <path d="M20 21q2 4 0 8M26 20q2 4 0 9" fill="none" stroke="#c9692a" stroke-width="2" stroke-linecap="round"/>
+  <path d="M5.5 19L7 10.5 12 15.5ZM12.5 15.5L17.5 10.5 18.5 19Z" fill="#f6a04d" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/>
+  <circle cx="12" cy="22" r="8" fill="#f6a04d" stroke="${INK}" stroke-width="2.5"/>
+  <g class="shut" fill="none" stroke="${INK}" stroke-width="1.6" stroke-linecap="round"><path d="M7.5 21.5q2 2 4 0M13 21.5q2 2 4 0"/></g>
+  <g class="yawn"><path d="M7.5 20.5l3.5 1M16.5 20.5l-3.5 1" stroke="${INK}" stroke-width="1.6" stroke-linecap="round"/><ellipse cx="12" cy="26" rx="2.6" ry="3" fill="#7a2b3a" stroke="${INK}" stroke-width="1.2"/></g>
+  <circle cx="8" cy="25" r="1.6" fill="#ff8f7a" opacity=".7"/><circle cx="16" cy="25" r="1.6" fill="#ff8f7a" opacity=".7"/>`;
+
+function sunPos(view) {
+  const P = G.P;
+  return view === 1 ? [26, SKY - 22] : view === 4 ? [P.W - 26, SKY - 22] : [P.W / 2, 32];
+}
+
+/* ---------- state ---------- */
+const G = {
+  mode: "daily", idx: 0, L: null, P: null, opt: null, placed: [], nextId: 1, catAlt: false, catAnim: false,
+  view: 2, orient: "h", picked: false, lifted: null, score: 0, shown: 0, endAt: 0, timer: 0, done: true,
+  justPlaced: null, grinUntil: 0, lastSec: null, nWin: 0, pigeonT: 0, daily: null,
+};
+const svg = $("#scene");
+let gEls = {};
+
+function catPos() { const L = G.L; return L.cat ? (G.catAlt ? L.catAlt : L.cat) : null; }
+function occMap(ignore) {
+  const m = new Map();
+  for (const p of G.placed) if (p.id !== ignore) for (const [x, y] of cellsOf(p.x, p.y, p.o)) m.set(keyOf(x, y), p.id);
+  return m;
+}
+
+const REASON_LABEL = { off: "Off roof", setback: "Setback!", blocked: "Blocked", cat: "Cat!", taken: "Taken", ridge: "Ridge!" };
+function check(x, y, o, ignore) {
+  const L = G.L, cells = cellsOf(x, y, o), occ = occMap(ignore), cat = catPos();
+  let reason = null, rank = 0;
+  const set = (r, k) => { if (k > rank) { rank = k; reason = r; } };
+  for (const [cx, cy] of cells) {
+    const t = cx >= 0 && cy >= 0 && cx < L.w && cy < L.h ? L.grid[cy][cx] : ".";
+    if (t === ".") set("off", 6);
+    else if (t === "F") set("setback", 5);
+    else if (OBSTACLES.includes(t)) set("blocked", 4);
+    else if (cat && cat[0] === cx && cat[1] === cy) set("cat", 3);
+    else if (occ.has(keyOf(cx, cy))) set("taken", 2);
+  }
+  if (!reason) { const [[ax, ay], [bx, by]] = cells; if (L.grid[ay][ax] !== L.grid[by][bx]) set("ridge", 1); }
+  const v = reason ? 0 : cells.reduce((s, [cx, cy]) => s + L.value[cy][cx], 0);
+  return { ok: !reason, reason, v, x, y, o };
+}
+
+function deny(reason, el) {
+  if (el) retrigger(el, "wiggle");
+  if (reason === "setback") return showInspector();
+  sfx.nope();
+  if (reason === "ridge") toast("Panels can't straddle a ridge!");
+  else if (reason === "cat") toast("Psst — tap the cat to shoo it 🐈");
+}
+
+let inspTimer = 0;
+function showInspector() {
+  sfx.stamp();
+  const el = $("#inspector"); el.classList.remove("show"); void el.offsetWidth; el.classList.add("show");
+  clearTimeout(inspTimer); inspTimer = setTimeout(() => el.classList.remove("show"), 1100);
+}
+
+/* ---------- scene ---------- */
+function layoutFor(L) {
+  const left = L.tree === "left" ? TREE_M : MARGIN, right = L.tree === "right" ? TREE_M : MARGIN;
+  return { gx: left, gy: SKY, W: left + L.w * CS + right, H: SKY + L.h * CS + WALL + GROUND };
+}
+
+function houseMarkup(L, P) {
+  const bottom = L.grid[L.h - 1];
+  let minX = bottom.findIndex(t => t !== "."), maxX = bottom.length - 1 - [...bottom].reverse().findIndex(t => t !== ".");
+  const x0 = P.gx + minX * CS + 10, x1 = P.gx + (maxX + 1) * CS - 10, top = P.gy + L.h * CS - 6, groundY = P.gy + L.h * CS + WALL;
+  const wallW = x1 - x0, dc = (x0 + x1) / 2;
+  let n = Math.max(2, Math.min(6, Math.floor((wallW - 50) / 48))); if (n % 2) n--;
+  G.nWin = n;
+  let wins = "";
+  const half = n / 2, span = dc - 24 - (x0 + 8), step = span / half;
+  for (let i = 0; i < n; i++) {
+    const side = i < half ? 0 : 1, k = side ? i - half : i;
+    const cx = side ? dc + 24 + step * (half - k - 0.5) : x0 + 8 + step * (k + 0.5);
+    const wy = top + 18;
+    wins += `<rect class="glow" id="glow${i}" x="${cx - 13}" y="${wy - 2}" width="26" height="26" rx="6" fill="#ffe46b" filter="url(#sglow)"/>
+      <rect class="win" id="win${i}" x="${cx - 11}" y="${wy}" width="22" height="22" rx="4" stroke="${INK}" stroke-width="3"/>
+      <path d="M${cx} ${wy + 1}v20M${cx - 10} ${wy + 11}h20" stroke="${INK}" stroke-width="2"/>`;
+  }
+  return `<rect x="-1000" y="${groundY - 2}" width="${P.W + 2000}" height="1000" fill="#8fd16a"/>
+    <path d="M-1000 ${groundY - 2}H${P.W + 1000}" stroke="${INK}" stroke-width="3"/>
+    <rect x="${x0}" y="${top}" width="${wallW}" height="${groundY - top}" rx="5" fill="#ffe1a8" stroke="${INK}" stroke-width="3"/>
+    <rect x="${x0 + 2}" y="${top + 2}" width="${wallW - 4}" height="9" fill="rgba(43,33,64,.14)"/>
+    ${wins}
+    <rect x="${dc - 15}" y="${groundY - 46}" width="30" height="46" rx="5" fill="#c46b3c" stroke="${INK}" stroke-width="3"/>
+    <circle cx="${dc + 8}" cy="${groundY - 22}" r="2.5" fill="${INK}"/>
+    <g stroke="${INK}" stroke-width="3" fill="#5cbf5a"><circle cx="${dc - 30}" cy="${groundY - 6}" r="10"/><circle cx="${dc - 42}" cy="${groundY - 4}" r="8"/>
+      <circle cx="${dc + 30}" cy="${groundY - 6}" r="10"/><circle cx="${dc + 42}" cy="${groundY - 4}" r="8"/></g>`;
+}
+
+function treeMarkup(L, P) {
+  if (!L.tree) return "";
+  const cx = L.tree === "left" ? P.gx - 34 : P.gx + L.w * CS + 34, top = P.gy + 4, groundY = P.gy + L.h * CS + WALL;
+  const blobs = [[cx, top + 22, 28], [cx - 16, top + 48, 22], [cx + 15, top + 50, 22], [cx, top + 64, 20]];
+  return `<rect x="${cx - 8}" y="${top + 50}" width="16" height="${groundY - top - 46}" rx="5" fill="#9b6a43" stroke="${INK}" stroke-width="3"/>
+    ${blobs.map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${INK}" stroke="${INK}" stroke-width="6"/>`).join("")}
+    ${blobs.map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#5cbf5a"/>`).join("")}
+    <circle cx="${cx - 8}" cy="${top + 14}" r="7" fill="#7fd47a"/>`;
+}
+
+function buildScene() {
+  const L = G.L, P = G.P = layoutFor(L);
+  svg.setAttribute("viewBox", `0 0 ${P.W} ${P.H}`);
+  svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+  const rays = [0, 45, 90, 135, 180, 225, 270, 315].map(a => `<path transform="rotate(${a})" d="M0-24v-7" />`).join("");
+  svg.innerHTML = defs("s") + `
+    <g class="cloud" style="--dist:${P.W + 160}px"><g transform="translate(0,26)">
+      <g fill="${INK}" stroke="${INK}" stroke-width="6"><ellipse cx="0" cy="6" rx="30" ry="11"/><circle cx="-8" cy="0" r="12"/><circle cx="10" cy="-2" r="14"/></g>
+      <g fill="#fff"><ellipse cx="0" cy="6" rx="30" ry="11"/><circle cx="-8" cy="0" r="12"/><circle cx="10" cy="-2" r="14"/></g></g></g>
+    <g id="sun"><g class="rays" stroke="${INK}" stroke-width="3.5" stroke-linecap="round">${rays}</g>
+      <circle r="19" fill="#ffc93c" stroke="${INK}" stroke-width="3"/>
+      <circle cx="-6" cy="-4" r="2.3" fill="${INK}"/><circle cx="6" cy="-4" r="2.3" fill="${INK}"/>
+      <circle cx="-11" cy="4" r="3" fill="#ff8f7a" opacity=".6"/><circle cx="11" cy="4" r="3" fill="#ff8f7a" opacity=".6"/>
+      <path class="m-happy" d="M-7 4q7 7 14 0" fill="none" stroke="${INK}" stroke-width="2.5" stroke-linecap="round"/>
+      <path class="m-grin" d="M-8 3q8 11 16 0z" fill="${INK}"/>
+      <path class="m-sweat" d="M-6 9q6-5 12 0" fill="none" stroke="${INK}" stroke-width="2.5" stroke-linecap="round"/>
+      <path class="drop" d="M15-13q5 7 0 9q-5-2 0-9z" fill="#7fd0ff" stroke="${INK}" stroke-width="1.6"/></g>
+    ${treeMarkup(L, P)}
+    ${houseMarkup(L, P)}
+    <g id="gTiles">${tilesMarkup(L, P.gx, P.gy, "s", false)}</g>
+    <g id="gBadges">${badgesMarkup(L, P.gx, P.gy)}</g>
+    <g id="gPanels"></g><g id="gShade"></g><g id="gSad"></g><g id="gCat"></g><g id="gGhost"></g><g id="gFx"></g><g id="gPigeon"></g>`;
+  gEls = {};
+  for (const id of ["sun", "gPanels", "gShade", "gSad", "gCat", "gGhost", "gFx", "gPigeon"]) gEls[id] = svg.querySelector("#" + id);
+  if (L.cat) gEls.gCat.innerHTML = `<g class="cat"><g class="catbody">${CAT_INNER}</g><g class="zzz"><text x="22" y="12">z</text><text x="25" y="10">z</text><text x="28" y="8">Z</text></g></g>`;
+  setView(G.view, true);
+}
+
+function setView(bit, silent) {
+  G.view = bit;
+  document.querySelectorAll("#sunbar button").forEach(b => b.classList.toggle("on", +b.dataset.sun === bit));
+  const [x, y] = sunPos(bit);
+  if (gEls.sun) gEls.sun.style.transform = `translate(${x}px,${y}px)`;
+  if (!silent) sfx.ui();
+  renderDynamic();
+}
+
+function renderDynamic() {
+  const L = G.L, P = G.P; if (!L || !gEls.gPanels) return;
+  gEls.gPanels.innerHTML = G.placed.filter(p => p.id !== G.lifted)
+    .map(p => panelMarkup(P.gx + p.x * CS, P.gy + p.y * CS, p.o, p.id === G.justPlaced ? "pop" : "", `data-id="${p.id}"`)).join("");
+  G.justPlaced = null;
+
+  let shade = "";
+  for (let y = 0; y < L.h; y++) for (let x = 0; x < L.w; x++) if (L.shade[y][x] & G.view)
+    shade += `<rect x="${P.gx + x * CS - 4}" y="${P.gy + y * CS - 4}" width="${CS + 8}" height="${CS + 8}" rx="18" fill="${INK}"/>`;
+  gEls.gShade.innerHTML = shade ? `<g filter="url(#ssoft)" opacity=".5">${shade}</g>` : "";
+
+  let sad = "", sadCount = 0;
+  for (const p of G.placed) if (p.id !== G.lifted) for (const [x, y] of cellsOf(p.x, p.y, p.o)) if (L.shade[y][x] & G.view) {
+    sadCount++;
+    sad += `<g transform="translate(${P.gx + x * CS + 20},${P.gy + y * CS + 20})"><circle r="8" fill="#cfe3ff" stroke="${INK}" stroke-width="2"/>
+      <circle cx="-2.7" cy="-1.6" r="1.3" fill="${INK}"/><circle cx="2.7" cy="-1.6" r="1.3" fill="${INK}"/>
+      <path d="M-3.2 4q3.2-3.2 6.4 0" fill="none" stroke="${INK}" stroke-width="1.7" stroke-linecap="round"/></g>`;
+  }
+  gEls.gSad.innerHTML = sad;
+
+  const cat = catPos();
+  if (cat && !G.catAnim) gEls.gCat.firstElementChild.setAttribute("transform", `translate(${P.gx + cat[0] * CS},${P.gy + cat[1] * CS})`);
+
+  const sun = gEls.sun;
+  sun.classList.toggle("sweat", sadCount > 0);
+  sun.classList.toggle("grin", sadCount === 0 && performance.now() < G.grinUntil);
+
+  const ratio = G.opt.score ? G.score / G.opt.score : 0, lit = Math.floor(ratio * G.nWin + 1e-9);
+  for (let i = 0; i < G.nWin; i++) {
+    const on = i < lit;
+    svg.querySelector("#win" + i).classList.toggle("lit", on);
+    svg.querySelector("#glow" + i).classList.toggle("lit", on);
+  }
+
+  const left = L.panels - G.placed.length;
+  $("#trayCount").textContent = "× " + left;
+  $("#trayBtn").classList.toggle("empty", left === 0);
+  if (left === 0) G.picked = false;
+  $("#trayBtn").classList.toggle("picked", G.picked);
+  $("#doneBtn").classList.toggle("ready", left === 0);
+  $("#rotateBtn").classList.toggle("vert", G.orient === "v");
+
+  let hint;
+  if (G.picked) hint = "Tap a roof spot to place it · tap the tray to cancel";
+  else if (left === 0) hint = "All panels down! Tweak them, or hit Done.";
+  else if (L.cat && G.placed.length < 2) hint = "Drag a panel onto the roof · tap the sleepy cat to shoo it";
+  else if (G.placed.length === 0) hint = "Drag a panel onto the roof — or tap the tray, then a spot";
+  else hint = "Tap a panel to rotate · drag it off the roof to remove";
+  $("#hint").textContent = hint;
+}
+
+function setScore() {
+  const old = G.score;
+  G.score = scoreLayout(G.L, G.placed);
+  if (G.score > old) G.grinUntil = performance.now() + 1300;
+  if (G.score !== old) {
+    retrigger($("#scoreBox"), "bump");
+    const from = G.shown, to = G.score, t0 = performance.now(), dur = RM ? 0 : 420;
+    cancelAnimationFrame(G.tw);
+    const step = t => {
+      const k = dur ? Math.min(1, (t - t0) / dur) : 1;
+      G.shown = Math.round(from + (to - from) * (1 - Math.pow(1 - k, 3)));
+      $("#scoreVal").textContent = G.shown;
+      if (k < 1) G.tw = requestAnimationFrame(step);
+    };
+    G.tw = requestAnimationFrame(step);
+    setTimeout(renderDynamic, 1350);
+  }
+  renderDynamic();
+}
+
+function floatText(cx, cy, text) {
+  const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  g.innerHTML = `<text class="rise" x="${cx}" y="${cy}" text-anchor="middle" font-size="16" font-weight="900" fill="#fff" stroke="${INK}" stroke-width="4" paint-order="stroke">${text}</text>`;
+  gEls.gFx.appendChild(g); setTimeout(() => g.remove(), 950);
+}
+
+function renderGhost(sn) {
+  if (!sn) { gEls.gGhost.innerHTML = ""; return; }
+  const P = G.P, X = P.gx + sn.x * CS, Y = P.gy + sn.y * CS, w = sn.o === "h" ? CS * 2 : CS, h = sn.o === "h" ? CS : CS * 2;
+  const col = sn.ok ? "#2fbf68" : "#ee4b4b", label = sn.ok ? `+${sn.v} ☀️` : REASON_LABEL[sn.reason];
+  gEls.gGhost.innerHTML = (sn.ok ? panelMarkup(X, Y, sn.o, "", 'opacity=".7"') : `<rect x="${X + 3}" y="${Y + 3}" width="${w - 6}" height="${h - 6}" rx="6" fill="#ee4b4b" opacity=".45"/>`) +
+    `<rect x="${X + 1}" y="${Y + 1}" width="${w - 2}" height="${h - 2}" rx="8" fill="none" stroke="${col}" stroke-width="4" stroke-dasharray="${sn.ok ? "none" : "6 4"}"/>
+     <text x="${X + w / 2}" y="${Y - 7}" text-anchor="middle" font-size="14" font-weight="900" fill="#fff" stroke="${col}" stroke-width="4" paint-order="stroke">${label}</text>`;
+}
+
+/* ---------- placement actions ---------- */
+function place(sn) {
+  const id = G.nextId++;
+  G.placed.push({ id, x: sn.x, y: sn.y, o: sn.o });
+  G.justPlaced = id;
+  sfx.clink();
+  setScore();
+  const P = G.P, w = sn.o === "h" ? 2 : 1;
+  floatText(P.gx + (sn.x + w / 2) * CS, P.gy + sn.y * CS - 4, `+${sn.v}`);
+}
+
+function rotatePanel(id) {
+  const p = G.placed.find(q => q.id === id);
+  const sn = check(p.x, p.y, p.o === "h" ? "v" : "h", id);
+  const el = gEls.gPanels.querySelector(`[data-id="${id}"] .pin`);
+  if (!sn.ok) return deny(sn.reason, el);
+  p.o = sn.o; G.justPlaced = id; sfx.rotate(); setScore();
+}
+
+function removePanel(id) {
+  G.placed = G.placed.filter(p => p.id !== id);
+  sfx.remove(); setScore();
+}
+
+function tapToPlace(cx, cy) {
+  const o = G.orient;
+  const tries = [check(cx, cy, o), o === "h" ? check(cx - 1, cy, o) : check(cx, cy - 1, o)];
+  const ok = tries.find(t => t.ok);
+  if (ok) { G.picked = false; place(ok); } else deny(tries[0].reason);
+}
+
+let catTimer = 0;
+function tapCat() {
+  if (G.catAnim) return;
+  const L = G.L, from = catPos(), to = G.catAlt ? L.cat : L.catAlt;
+  const catEl = gEls.gCat.firstElementChild;
+  if (occMap().has(keyOf(to[0], to[1]))) { sfx.nope(); retrigger(catEl.querySelector(".catbody"), "wiggle"); toast("The cat refuses to nap on a panel 😾"); return; }
+  G.catAlt = !G.catAlt; G.catAnim = true;
+  sfx.meow(); catEl.classList.add("yawning");
+  const P = G.P, ax = P.gx + from[0] * CS, ay = P.gy + from[1] * CS, bx = P.gx + to[0] * CS, by = P.gy + to[1] * CS;
+  catTimer = setTimeout(() => {
+    const t0 = performance.now(), dur = RM ? 150 : 520;
+    const step = t => {
+      if (!G.catAnim) return;
+      const k = Math.min(1, (t - t0) / dur), arc = RM ? 0 : Math.sin(k * Math.PI) * 34;
+      catEl.setAttribute("transform", `translate(${ax + (bx - ax) * k},${ay + (by - ay) * k - arc})`);
+      if (k < 1) requestAnimationFrame(step);
+      else { G.catAnim = false; catEl.classList.remove("yawning"); renderDynamic(); }
+    };
+    requestAnimationFrame(step);
+  }, RM ? 120 : 380);
+}
+
+/* ---------- pointer input (mouse + touch share one path) ---------- */
+let drag = null;
+function toGrid(clientX, clientY) {
+  const m = svg.getScreenCTM(); if (!m) return null;
+  const pt = svg.createSVGPoint(); pt.x = clientX; pt.y = clientY;
+  const p = pt.matrixTransform(m.inverse());
+  return { fx: (p.x - G.P.gx) / CS, fy: (p.y - G.P.gy) / CS, scale: m.a };
+}
+function overEl(el, e) { const r = el.getBoundingClientRect(); return e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom; }
+const playing = () => !G.done && $("#play").classList.contains("active");
+
+$("#trayBtn").addEventListener("pointerdown", e => {
+  if (!playing() || drag) return;
+  e.preventDefault(); audio();
+  const w = G.orient === "h" ? 2 : 1, h = G.orient === "h" ? 1 : 2;
+  drag = { kind: "tray", o: G.orient, sx: e.clientX, sy: e.clientY, pid: e.pointerId, active: false, offX: w / 2, offY: h / 2, touch: e.pointerType !== "mouse" };
+});
+
+svg.addEventListener("pointerdown", e => {
+  if (!playing() || drag) return;
+  e.preventDefault(); audio();
+  const g = toGrid(e.clientX, e.clientY); if (!g) return;
+  const cx = Math.floor(g.fx), cy = Math.floor(g.fy), cat = catPos();
+  const id = occMap().get(keyOf(cx, cy));
+  const base = { sx: e.clientX, sy: e.clientY, pid: e.pointerId, active: false, touch: e.pointerType !== "mouse", cx, cy };
+  if (id != null) {
+    const p = G.placed.find(q => q.id === id);
+    drag = { ...base, kind: "panel", id, o: p.o, offX: g.fx - p.x, offY: g.fy - p.y };
+  } else if (cat && cat[0] === cx && cat[1] === cy) drag = { ...base, kind: "cat" };
+  else drag = { ...base, kind: "roof" };
+});
+
+function startDrag() {
+  if (drag.kind === "tray") {
+    if (G.placed.length >= G.L.panels) { deny("none", $("#trayBtn")); drag = null; return; }
+    G.picked = false;
+  } else if (drag.kind === "panel") {
+    G.lifted = drag.id;
+  } else { drag.kind = "noop"; drag.active = true; return; }
+  drag.active = true; sfx.pick();
+  const g = toGrid(0, 0), px = CS * (g ? g.scale : 1);
+  const f = $("#floater"), pv = f.firstElementChild;
+  pv.className = "pv" + (drag.o === "v" ? " v" : "");
+  pv.style.width = px * (drag.o === "h" ? 2 : 1) - 6 + "px"; pv.style.height = px * (drag.o === "h" ? 1 : 2) - 6 + "px";
+  drag.px = px; f.style.display = "block";
+  renderDynamic();
+}
+
+function updateDrag(e) {
+  const lift = drag.touch ? drag.px * 0.9 : 0, cx = e.clientX, cy = e.clientY - lift;
+  const f = $("#floater");
+  f.style.transform = `translate(${cx - drag.offX * drag.px + 3}px,${cy - drag.offY * drag.px + 3}px)`;
+  const g = toGrid(cx, cy), L = G.L;
+  const onRoof = g && g.fx > -0.4 && g.fy > -0.4 && g.fx < L.w + 0.4 && g.fy < L.h + 0.4 && !overEl($(".tray"), e);
+  drag.snap = onRoof ? check(Math.round(g.fx - drag.offX), Math.round(g.fy - drag.offY), drag.o, drag.id) : null;
+  f.style.display = drag.snap ? "none" : "block";
+  renderGhost(drag.snap);
+}
+
+function endDrag() {
+  const d = drag; drag = null;
+  $("#floater").style.display = "none"; renderGhost(null);
+  if (d.kind === "noop") return;
+  G.lifted = null;
+  const sn = d.snap;
+  if (d.kind === "tray") {
+    if (sn && sn.ok) place(sn);
+    else if (sn) { deny(sn.reason); renderDynamic(); }
+    else { sfx.remove(); renderDynamic(); }
+  } else {
+    const p = G.placed.find(q => q.id === d.id);
+    if (!sn) removePanel(d.id);
+    else if (sn.ok) {
+      if (sn.x !== p.x || sn.y !== p.y) { p.x = sn.x; p.y = sn.y; G.justPlaced = p.id; sfx.clink(); setScore(); } else renderDynamic();
+    } else { renderDynamic(); deny(sn.reason, gEls.gPanels.querySelector(`[data-id="${d.id}"] .pin`)); }
+  }
+}
+
+function tap(d) {
+  if (d.kind === "tray") {
+    if (G.placed.length >= G.L.panels) return deny("none", $("#trayBtn"));
+    G.picked = !G.picked; G.picked ? sfx.pick() : sfx.ui(); renderDynamic(); if (!G.picked) renderGhost(null);
+  } else if (d.kind === "panel") rotatePanel(d.id);
+  else if (d.kind === "cat") tapCat();
+  else if (d.kind === "roof") {
+    if (G.picked) { renderGhost(null); tapToPlace(d.cx, d.cy); }
+    else toast("Drag a panel up from the tray ↓");
+  }
+}
+
+window.addEventListener("pointermove", e => {
+  if (!drag) {
+    if (G.picked && playing() && e.pointerType === "mouse") {
+      const g = toGrid(e.clientX, e.clientY), L = G.L;
+      const inside = g && g.fx >= 0 && g.fy >= 0 && g.fx < L.w && g.fy < L.h;
+      renderGhost(inside ? (() => { const cx = Math.floor(g.fx), cy = Math.floor(g.fy), a = check(cx, cy, G.orient); if (a.ok) return a; const b = G.orient === "h" ? check(cx - 1, cy, "h") : check(cx, cy - 1, "v"); return b.ok ? b : a; })() : null);
+    }
+    return;
+  }
+  if (e.pointerId !== drag.pid) return;
+  if (!drag.active && Math.hypot(e.clientX - drag.sx, e.clientY - drag.sy) > 8) startDrag();
+  if (drag && drag.active && drag.kind !== "noop") updateDrag(e);
+});
+window.addEventListener("pointerup", e => {
+  if (!drag || e.pointerId !== drag.pid) return;
+  if (drag.active) endDrag(); else { const d = drag; drag = null; tap(d); }
+});
+window.addEventListener("pointercancel", e => {
+  if (!drag || e.pointerId !== drag.pid) return;
+  cancelDrag();
+});
+function cancelDrag() {
+  if (!drag) return;
+  drag = null; G.lifted = null;
+  $("#floater").style.display = "none"; if (gEls.gGhost) renderGhost(null);
+  renderDynamic();
+}
+
+/* ---------- pigeon ---------- */
+const PIGEON = `<g class="body"><path d="M-10-6q-6 2-9 0q3-4 9-4z" fill="#8792a2" stroke="${INK}" stroke-width="1.8"/>
+  <ellipse cx="0" cy="-7" rx="10" ry="6.5" fill="#a9b4c2" stroke="${INK}" stroke-width="2"/>
+  <path class="wing" d="M-5-8q5-3 9 1q-5 3-9-1z" fill="#8792a2" stroke="${INK}" stroke-width="1.5"/>
+  <circle cx="9" cy="-14" r="5" fill="#a9b4c2" stroke="${INK}" stroke-width="2"/><path d="M6-11q3 2 6 0" stroke="#7fd0a0" stroke-width="2" fill="none"/>
+  <path d="M13.5-15l4.5 1.6-4.5 1.6z" fill="#ffb547" stroke="${INK}" stroke-width="1.2" stroke-linejoin="round"/>
+  <circle cx="10" cy="-15" r="1.2" fill="${INK}"/></g><path d="M-2-1v4M3-1v4" stroke="#ff8a5b" stroke-width="2" stroke-linecap="round"/>`;
+function schedulePigeon() {
+  clearTimeout(G.pigeonT);
+  G.pigeonT = setTimeout(pigeonVisit, 7000 + Math.random() * 9000);
+}
+function pigeonVisit() {
+  if (!playing()) return;
+  const L = G.L, P = G.P, cols = [];
+  for (let x = 0; x < L.w; x++) { const y = L.grid.findIndex(r => r[x] !== "."); if (y >= 0) cols.push([x, y]); }
+  const [col, row] = cols[Math.floor(Math.random() * cols.length)];
+  const tx = P.gx + col * CS + 20, ty = P.gy + row * CS + 1, fromLeft = Math.random() < 0.5;
+  const sx = fromLeft ? -30 : P.W + 30, ex = fromLeft ? P.W + 30 : -30;
+  const g = gEls.gPigeon; g.innerHTML = `<g class="pigeon"><g class="flip">${PIGEON}</g></g>`;
+  const pg = g.firstElementChild, flip = pg.firstElementChild;
+  const fly = (x0, y0, x1, y1, dur, done) => {
+    flip.setAttribute("transform", `scale(${x1 > x0 ? 1 : -1},1)`);
+    const t0 = performance.now();
+    const step = t => {
+      if (!pg.isConnected) return;
+      const k = Math.min(1, (t - t0) / dur), e = k * (2 - k);
+      pg.setAttribute("transform", `translate(${x0 + (x1 - x0) * e},${y0 + (y1 - y0) * e - Math.sin(k * Math.PI) * 20})`);
+      k < 1 ? requestAnimationFrame(step) : done();
+    };
+    requestAnimationFrame(step);
+  };
+  fly(sx, 10, tx, ty, 1200, () => {
+    pg.classList.add("bob");
+    setTimeout(() => { pg.classList.remove("bob"); fly(tx, ty, ex, -20, 1100, () => { g.innerHTML = ""; schedulePigeon(); }); }, 2600 + Math.random() * 1800);
+  });
+}
+
+/* ---------- round flow ---------- */
+function startLevel(mode, idx) {
+  G.mode = mode; G.idx = idx; G.L = LV[idx]; G.opt = getOpt(idx);
+  G.placed = []; G.nextId = 1; G.catAlt = false; G.catAnim = false; G.picked = false; G.lifted = null;
+  G.score = 0; G.shown = 0; G.done = false; G.view = 2; G.orient = "h"; G.lastSec = null; G.grinUntil = 0;
+  clearTimeout(catTimer); drag = null;
+  G.daily = mode === "daily" ? dailyInfo() : null;
+  $("#lvlTag").textContent = mode === "daily" ? `Roof #${G.daily.num}` : `Practice ${idx + 1}/${LV.length}`;
+  $("#lvlName").textContent = `${G.L.name} · ${G.L.panels} panels`;
+  $("#scoreVal").textContent = "0";
+  show("play");
+  buildScene();
+  renderDynamic();
+  G.endAt = performance.now() + CONFIG.roundSeconds * 1000;
+  clearInterval(G.timer); G.timer = setInterval(tickTimer, 100); tickTimer();
+  schedulePigeon();
+}
+
+function tickTimer() {
+  const left = Math.max(0, (G.endAt - performance.now()) / 1000), sec = Math.ceil(left);
+  $("#timeVal").textContent = sec;
+  $("#timer").classList.toggle("pulse", sec <= 10);
+  if (sec !== G.lastSec) { if (sec <= 10 && sec > 0 && G.lastSec != null) sfx.tick(); G.lastSec = sec; }
+  if (left <= 0) finish(true);
+}
+
+function stopRound() {
+  clearInterval(G.timer); clearTimeout(G.pigeonT); clearTimeout(catTimer);
+  G.catAnim = false; cancelDrag(); G.done = true;
+  if (gEls.gPigeon) gEls.gPigeon.innerHTML = "";
+}
+
+function finish(timeUp) {
+  if (G.done) return;
+  const timeLeft = Math.max(0, Math.ceil((G.endAt - performance.now()) / 1000));
+  stopRound();
+  const L = G.L, score = G.score, best = G.opt.score, ratio = best ? score / best : 0;
+  const stars = ratio >= 1 ? 3 : ratio >= 0.85 ? 2 : ratio >= 0.6 ? 1 : 0;
+  let newBest = false;
+  if (G.mode === "daily") {
+    const k = "pp:daily:" + G.daily.key, prev = store.get(k, null);
+    if (!prev || score > prev.best) { store.set(k, { best: score, stars, roof: G.daily.num }); newBest = !!prev; }
+  } else {
+    const pr = store.get("pp:practice", { stars: [], best: [], next: 0 });
+    if (score > (pr.best[G.idx] || 0)) { newBest = pr.best[G.idx] != null; pr.best[G.idx] = score; }
+    pr.stars[G.idx] = Math.max(pr.stars[G.idx] || 0, stars);
+    pr.next = (G.idx + 1) % LV.length;
+    store.set("pp:practice", pr);
+  }
+  G.result = { score, best, stars, timeLeft, timeUp, layout: G.placed.map(p => ({ ...p })), cat: catPos() };
+  if (timeUp) sfx.whistle();
+  showResults(newBest);
+}
+
+const COPY = ["The roof is confused but supportive.", "The pigeons approve.", "So close — the sun believes in you.", "Absolute solar legend."];
+function showResults(newBest) {
+  const R = G.result, L = G.L;
+  $("#resTag").innerHTML = (G.mode === "daily" ? `Roof #${G.daily.num}` : `Practice ${G.idx + 1}/${LV.length}`) + `<small>${L.name}</small>`;
+  $("#stars").innerHTML = [0, 1, 2].map(i => `<svg class="star" viewBox="0 0 50 50"><path d="M25 3l6.6 13.9 15.2 1.9-11.2 10.5 2.9 15L25 36.9 11.5 44.3l2.9-15L3.2 18.8l15.2-1.9z" fill="${i < R.stars ? "#ffc93c" : "#e6dfd3"}" stroke="${INK}" stroke-width="3.5" stroke-linejoin="round"/>${i < R.stars ? '<path d="M17 17l4-1" stroke="#fff" stroke-width="3" stroke-linecap="round"/>' : ""}</svg>`).join("");
+  $("#resLine").textContent = COPY[R.stars];
+  $("#resYou").textContent = R.score;
+  $("#resBest").textContent = R.best;
+  $("#resNew").innerHTML = newBest ? ' <span class="newbest">New best!</span>' : "";
+  $("#resTime").textContent = R.timeUp ? "⏱ Time's up!" : `⏱ Finished with ${R.timeLeft}s to spare`;
+  $("#miniYouScore").textContent = `${R.score} ☀️`;
+  $("#miniBestScore").textContent = `${R.best} ☀️`;
+  $("#nextBtn").textContent = G.mode === "practice" ? "Next roof" : "Practice";
+  show("results");
+  $("#results").scrollTop = 0;
+  renderMini($("#miniYou"), L, R.layout, R.cat, "y", false);
+  renderMini($("#miniBest"), L, G.opt.panels, G.opt.cat, "b", true);
+  const stars = [...document.querySelectorAll("#stars .star")];
+  stars.forEach((s, i) => setTimeout(() => {
+    s.classList.add("in");
+    if (i < R.stars) sfx.star(i);
+    if (i === 2 && R.stars === 3) { sfx.fanfare(); confetti(); }
+  }, 350 + i * 380));
+}
+
+function renderMini(el, L, layout, cat, pre, animate) {
+  const pad = 8;
+  el.setAttribute("viewBox", `${-pad} ${-pad} ${L.w * CS + pad * 2} ${L.h * CS + pad * 2}`);
+  el.innerHTML = defs(pre) + tilesMarkup(L, 0, 0, pre, true) +
+    layout.map((p, i) => animate
+      ? `<g transform="translate(${p.x * CS},${p.y * CS})"><g class="drop" style="animation-delay:${0.5 + i * 0.09}s">${panelMarkup(0, 0, p.o)}</g></g>`
+      : panelMarkup(p.x * CS, p.y * CS, p.o)).join("") +
+    (cat ? `<g transform="translate(${cat[0] * CS},${cat[1] * CS})"><g class="cat">${CAT_INNER}</g></g>` : "");
+}
+
+/* ---------- share ---------- */
+function shareText() {
+  const R = G.result, L = G.L, occ = new Set();
+  for (const p of R.layout) for (const [x, y] of cellsOf(p.x, p.y, p.o)) occ.add(keyOf(x, y));
+  const rows = L.grid.map((row, y) => row.map((t, x) => {
+    if (occ.has(keyOf(x, y))) return "🟦";
+    if (R.cat && R.cat[0] === x && R.cat[1] === y) return "🐈";
+    if (t === ".") return null;
+    if (t === "F") return "🟥";
+    if (OBSTACLES.includes(t)) return "⬛";
+    return "⬜";
+  }));
+  const keepRow = rows.map(r => r.some(c => c));
+  const keepCol = L.grid[0].map((_, x) => rows.some(r => r[x]));
+  const grid = rows.filter((_, y) => keepRow[y]).map(r => r.filter((_, x) => keepCol[x]).map(c => c || "  ").join(""));
+  const head = G.mode === "daily" ? `☀️ Panel Packer #${G.daily.num} ${starStr(R.stars)}` : `☀️ Panel Packer: ${L.name} ${starStr(R.stars)}`;
+  return [head, ...grid, `${R.score}/${R.best} ☀️`, CONFIG.gameUrl].join("\n");
+}
+
+async function copyText(text) {
+  try { if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(text); return true; } } catch (e) { /* fall through */ }
+  try {
+    const ta = document.createElement("textarea");
+    ta.value = text; ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+    document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, text.length);
+    const ok = document.execCommand("copy"); ta.remove(); return ok;
+  } catch (e) { return false; }
+}
+
+async function share() {
+  const text = shareText();
+  if (navigator.share) {
+    try { await navigator.share({ text }); return; }
+    catch (e) { if (e && e.name === "AbortError") return; }
+  }
+  toast((await copyText(text)) ? "Copied! Paste it anywhere 📋" : "Couldn't copy — sorry!");
+}
+
+/* ---------- confetti ---------- */
+function confetti() {
+  const c = $("#confetti"), ctx = c.getContext("2d"), dpr = window.devicePixelRatio || 1;
+  c.width = innerWidth * dpr; c.height = innerHeight * dpr; ctx.scale(dpr, dpr);
+  const colors = ["#ffc93c", "#1e4fd6", "#ee4b4b", "#2fbf68", "#ff7eb6", "#6fd0ff"];
+  const n = RM ? 24 : 150;
+  const parts = Array.from({ length: n }, () => ({
+    x: innerWidth / 2 + (Math.random() - 0.5) * 80, y: innerHeight * 0.25,
+    vx: (Math.random() - 0.5) * (RM ? 4 : 12), vy: -Math.random() * (RM ? 4 : 11) - 2,
+    r: Math.random() * Math.PI, vr: RM ? 0 : (Math.random() - 0.5) * 0.4,
+    w: 6 + Math.random() * 6, h: 4 + Math.random() * 6, col: colors[Math.floor(Math.random() * colors.length)],
+  }));
+  const t0 = performance.now(), dur = RM ? 1500 : 2800;
+  const step = t => {
+    const k = (t - t0) / dur;
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    if (k >= 1) return;
+    ctx.globalAlpha = Math.min(1, 3 * (1 - k));
+    for (const p of parts) {
+      p.vy += 0.28; p.vx *= 0.99; p.x += p.vx; p.y += p.vy; p.r += p.vr;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.col; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); ctx.restore();
+    }
+    requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+/* ---------- title ---------- */
+function refreshTitle() {
+  const d = dailyInfo(), rec = store.get("pp:daily:" + d.key, null);
+  $("#dailyLabel").textContent = `Roof #${d.num} · ${LV[d.idx].name}`;
+  $("#dailyStatus").textContent = rec ? `Today's best: ${rec.best} ☀️ ${starStr(rec.stars)}` : "";
+  const pr = store.get("pp:practice", { stars: [], best: [], next: 0 }), next = (pr.next || 0) % LV.length;
+  $("#practiceLabel").textContent = `Next up: ${LV[next].name}`;
+  $("#chips").innerHTML = LV.map((L, i) => `<button class="chip${i === next ? " next" : ""}" data-lvl="${i}" aria-label="Practice ${L.name}">${i + 1}<span>${pr.stars[i] != null ? starStr(pr.stars[i]) : "–"}</span></button>`).join("");
+  $("#muteBtn").textContent = muted ? "🔇" : "🔊";
+}
+
+let afterHow = null;
+function openHow(then) { afterHow = then || null; $("#howto").classList.add("show"); $("#howClose").textContent = then ? "Let's go!" : "Got it!"; }
+function closeHow() {
+  $("#howto").classList.remove("show"); store.set("pp:seenHow", true);
+  const f = afterHow; afterHow = null; if (f) f();
+}
+function begin(mode, idx) {
+  audio(); sfx.ui();
+  const go = () => startLevel(mode, idx);
+  store.get("pp:seenHow", false) ? go() : openHow(go);
+}
+
+$("#playDaily").onclick = () => begin("daily", dailyInfo().idx);
+$("#playPractice").onclick = () => begin("practice", (store.get("pp:practice", { next: 0 }).next || 0) % LV.length);
+$("#chips").onclick = e => { const b = e.target.closest(".chip"); if (b) begin("practice", +b.dataset.lvl); };
+$("#howBtn").onclick = () => { sfx.ui(); openHow(); };
+$("#howClose").onclick = closeHow;
+$("#howto").onclick = e => { if (e.target.id === "howto") closeHow(); };
+$("#muteBtn").onclick = () => { muted = !muted; store.set("pp:mute", muted); refreshTitle(); sfx.ui(); };
+$("#homeBtn").onclick = () => { stopRound(); sfx.ui(); refreshTitle(); show("title"); };
+$("#doneBtn").onclick = () => { if (playing()) finish(false); };
+$("#rotateBtn").onclick = () => { if (!playing()) return; G.orient = G.orient === "h" ? "v" : "h"; sfx.rotate(); renderDynamic(); };
+$("#sunbar").onclick = e => { const b = e.target.closest("button"); if (b && playing()) setView(+b.dataset.sun); };
+$("#shareBtn").onclick = share;
+$("#retryBtn").onclick = () => { sfx.ui(); startLevel(G.mode, G.idx); };
+$("#nextBtn").onclick = () => {
+  sfx.ui();
+  if (G.mode === "practice") startLevel("practice", (G.idx + 1) % LV.length);
+  else startLevel("practice", (store.get("pp:practice", { next: 0 }).next || 0) % LV.length);
+};
+$("#resHome").onclick = () => { sfx.ui(); refreshTitle(); show("title"); };
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && $("#howto").classList.contains("show")) closeHow();
+  if (playing() && (e.key === "r" || e.key === "R")) $("#rotateBtn").click();
+});
+
+document.querySelectorAll(".product").forEach(el => (el.textContent = CONFIG.productName));
+$("#pitch").textContent = `Pack the sunniest roof you can in ${CONFIG.roundSeconds} seconds. Can you match the perfect layout?`;
+$("#cta").textContent = CONFIG.ctaText;
+$("#cta").href = CONFIG.ctaUrl;
+refreshTitle();
+
+if (DEV) {
+  LV.forEach((L, i) => {
+    const sh = LEVELS[i].shade;
+    if (sh && (sh.length !== L.h || sh.some(r => r.length !== L.w))) console.warn(`[Panel Packer] ${L.name}: shade rows must match roof dimensions`);
+    for (const c of [L.cat, L.catAlt]) if (c && !isBuildable(L.grid[c[1]][c[0]])) console.warn(`[Panel Packer] ${L.name}: cat cell ${c} is not buildable`);
+    const r = getOpt(i);
+    console.log(`[Panel Packer] Level ${i + 1} "${L.name}": optimal ${r.score} ☀️ with ${r.panels.length}/${L.panels} panels${r.cat ? `, cat at [${r.cat}]` : ""} (${r.ms.toFixed(1)}ms, ${r.nodes} nodes)`);
+  });
+}
+</script>
+</body>
+</html>
