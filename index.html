@@ -378,21 +378,24 @@ const LEVELS = [
       "SSSSSS",
     ] },
   { name: "Classic Gable", panels: 8,
+    // Flipped top-to-bottom from the spec so the north face is on the north (top) side and both faces slope
+    // away from the ridge. Same puzzle mirrored, same best score.
     roof: [
       "FFFFFFFF",
-      "FSSSSSSF",
-      "FSSVSSSF",
+      "FNNNNNNF",
+      "FNNNNNNF",
       "FFFFFFFF",
-      "FNNNNNNF",
-      "FNNNNNNF",
+      "FSSVSSSF",
+      "FSSSSSSF",
       "FFFFFFFF",
     ] },
   { name: "The Big Oak", panels: 7, tree: "right",
+    // Left face was "E" in the spec; it sits on the west side of the roof, so it's "W". E and W score the same.
     roof: [
-      "EEEESSSS",
-      "EEEESSSS",
-      "EKEESSSS",
-      "EEEESSCS",
+      "WWWWSSSS",
+      "WWWWSSSS",
+      "WKWWSSSS",
+      "WWWWSSCS",
     ],
     shade: [
       "00000011",
@@ -539,8 +542,9 @@ function scoreLayout(L, panels) {
 /* ================================================================ */
 const $ = s => document.querySelector(s);
 const INK = "#2b2140";
+const SLOPE_ANGLE = { S: 0, W: 90, N: 180, E: -90 };
 const FACE_FILL = { S: "#e7794f", E: "#e9b872", W: "#e9b872", N: "#8797b2" };
-const CS = 40, SKY = 80, WALL = 86, GROUND = 30, MARGIN = 36, TREE_M = 70;
+const CS = 40, SKY = 80, WALL = 86, GROUND = 62, MARGIN = 36, TREE_M = 70;
 const RM = (() => { try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; } })();
 const DEV = location.protocol === "file:" || /^(localhost|127\.0\.0\.1)$/.test(location.hostname) || /[?&]dev\b/.test(location.search);
 const LV = LEVELS.map(prepLevel);
@@ -630,16 +634,52 @@ function defs(pre) {
   </defs>`;
 }
 
+// Connected same-letter roof faces, with bounding boxes
+function faceRegions(L) {
+  const seen = new Set(), regions = [], regionOf = {};
+  for (let y = 0; y < L.h; y++) for (let x = 0; x < L.w; x++) {
+    const t = L.grid[y][x];
+    if (!isBuildable(t) || seen.has(keyOf(x, y))) continue;
+    const r = { t, first: [x, y], minX: x, maxX: x, minY: y, maxY: y, id: regions.length };
+    const stack = [[x, y]]; seen.add(keyOf(x, y));
+    while (stack.length) {
+      const [cx, cy] = stack.pop();
+      regionOf[keyOf(cx, cy)] = r.id;
+      r.minX = Math.min(r.minX, cx); r.maxX = Math.max(r.maxX, cx); r.minY = Math.min(r.minY, cy); r.maxY = Math.max(r.maxY, cy);
+      for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+        const nx = cx + dx, ny = cy + dy;
+        if (nx < 0 || ny < 0 || nx >= L.w || ny >= L.h || L.grid[ny][nx] !== t || seen.has(keyOf(nx, ny))) continue;
+        seen.add(keyOf(nx, ny)); stack.push([nx, ny]);
+      }
+    }
+    regions.push(r);
+  }
+  return { regions, regionOf };
+}
+
+// Each face shades from light at the ridge to darker at the eave it slopes down to
+function slopeGradients(L, ox, oy, pre, regions) {
+  return "<defs>" + regions.map(r => {
+    const x0 = ox + r.minX * CS, x1 = ox + (r.maxX + 1) * CS, y0 = oy + r.minY * CS, y1 = oy + (r.maxY + 1) * CS, mx = (x0 + x1) / 2, my = (y0 + y1) / 2;
+    const [ax, ay, bx, by] = { S: [mx, y0, mx, y1], N: [mx, y1, mx, y0], E: [x0, my, x1, my], W: [x1, my, x0, my] }[r.t];
+    return `<linearGradient id="${pre}slope${r.id}" gradientUnits="userSpaceOnUse" x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}">
+      <stop offset="0" stop-color="#fff" stop-opacity=".24"/><stop offset="1" stop-color="${INK}" stop-opacity=".16"/></linearGradient>`;
+  }).join("") + "</defs>";
+}
+
 function tilesMarkup(L, ox, oy, pre, mini) {
-  let slab = "", s = "", trucks = 0;
+  const { regions, regionOf } = faceRegions(L);
+  let slab = "", s = slopeGradients(L, ox, oy, pre, regions), trucks = 0;
   const fCells = [];
   for (let y = 0; y < L.h; y++) for (let x = 0; x < L.w; x++) {
     const t = L.grid[y][x]; if (t === ".") continue;
     const X = ox + x * CS, Y = oy + y * CS;
     slab += `<rect x="${X - 3}" y="${Y - 3}" width="${CS + 6}" height="${CS + 6}" rx="10" fill="${INK}"/>`;
     if (isBuildable(t)) {
-      s += `<rect x="${X + 2}" y="${Y + 2}" width="${CS - 4}" height="${CS - 4}" rx="6" fill="${FACE_FILL[t]}" stroke="${INK}" stroke-width="2"/>`;
-      if (!mini) s += `<path d="M${X + 8} ${Y + 26}h${CS - 16}" stroke="rgba(43,33,64,.16)" stroke-width="2.5" stroke-linecap="round"/>`;
+      s += `<rect x="${X + 2}" y="${Y + 2}" width="${CS - 4}" height="${CS - 4}" rx="6" fill="${FACE_FILL[t]}" stroke="${INK}" stroke-width="2"/>
+        <rect x="${X + 3.5}" y="${Y + 3.5}" width="${CS - 7}" height="${CS - 7}" rx="5" fill="url(#${pre}slope${regionOf[keyOf(x, y)]})"/>`;
+      if (!mini) s += `<path d="${t === "S" || t === "N" ? `M${X + 8} ${Y + 15}h${CS - 16}M${X + 8} ${Y + 27}h${CS - 16}` : `M${X + 15} ${Y + 8}v${CS - 16}M${X + 27} ${Y + 8}v${CS - 16}`}" stroke="rgba(43,33,64,.17)" stroke-width="2.5" stroke-linecap="round"/>
+        <path transform="translate(${X + CS / 2},${Y + CS / 2}) rotate(${SLOPE_ANGLE[t]})" d="M-5.5-2.5L0 2.5 5.5-2.5" fill="none" stroke="rgba(43,33,64,.32)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>`;
     } else if (t === "F") {
       s += `<rect x="${X + 2}" y="${Y + 2}" width="${CS - 4}" height="${CS - 4}" rx="6" fill="url(#${pre}stripes)" stroke="${INK}" stroke-width="2"/>`;
       fCells.push([X, Y, x, y]);
@@ -664,33 +704,16 @@ function tilesMarkup(L, ox, oy, pre, mini) {
     if (!pick.length && fCells.length) pick.push(fCells[0]);
     for (const [X, Y] of pick) { trucks++; s += `<circle cx="${X + 20}" cy="${Y + 20}" r="11" fill="#fff" stroke="${INK}" stroke-width="2"/><text x="${X + 20}" y="${Y + 25}" font-size="13" text-anchor="middle">🚒</text>`; }
   }
-  return slab + s;
-}
-
-function badgesMarkup(L, ox, oy) {
-  const seen = new Set(); let s = "";
-  const ARROW = { S: 0, W: 90, N: 180, E: -90 };
-  const MOUTH = { S: "M-3 .8q3 3.4 6 0", E: "M-2.5 1.6q2.5 1.6 5 0", W: "M-2.5 1.6q2.5 1.6 5 0", N: "M-2.8 3q2.8-2.8 5.6 0" };
+  // Ridge caps wherever two different roof faces meet (panels can't cross them)
+  let ridge = "";
   for (let y = 0; y < L.h; y++) for (let x = 0; x < L.w; x++) {
-    const t = L.grid[y][x];
-    if (!isBuildable(t) || seen.has(keyOf(x, y))) continue;
-    const stack = [[x, y]]; seen.add(keyOf(x, y));
-    while (stack.length) {
-      const [cx, cy] = stack.pop();
-      for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
-        const nx = cx + dx, ny = cy + dy;
-        if (nx < 0 || ny < 0 || nx >= L.w || ny >= L.h || L.grid[ny][nx] !== t || seen.has(keyOf(nx, ny))) continue;
-        seen.add(keyOf(nx, ny)); stack.push([nx, ny]);
-      }
-    }
-    const X = ox + x * CS + 4, Y = oy + y * CS + 4;
-    s += `<g transform="translate(${X},${Y})"><rect width="32" height="17" rx="8.5" fill="#fff" stroke="${INK}" stroke-width="2"/>
-      <path transform="translate(9,8.5) rotate(${ARROW[t]})" d="M0-5V4M-3.5 0.5L0 4.5 3.5 0.5" fill="none" stroke="${INK}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-      <g transform="translate(23,8.5)"><circle r="5.6" fill="${t === "N" ? "#ffe39a" : "#ffc93c"}" stroke="${INK}" stroke-width="1.6"/>
-      <circle cx="-2" cy="-1.4" r=".9" fill="${INK}"/><circle cx="2" cy="-1.4" r=".9" fill="${INK}"/>
-      <path d="${MOUTH[t]}" fill="none" stroke="${INK}" stroke-width="1.3" stroke-linecap="round"/></g></g>`;
+    const t = L.grid[y][x]; if (!isBuildable(t)) continue;
+    const X = ox + x * CS, Y = oy + y * CS;
+    if (x + 1 < L.w && isBuildable(L.grid[y][x + 1]) && L.grid[y][x + 1] !== t) ridge += `M${X + CS} ${Y + 2}V${Y + CS - 2}`;
+    if (y + 1 < L.h && isBuildable(L.grid[y + 1][x]) && L.grid[y + 1][x] !== t) ridge += `M${X + 2} ${Y + CS}H${X + CS - 2}`;
   }
-  return s;
+  if (ridge) s += `<path d="${ridge}" stroke="${INK}" stroke-width="9" stroke-linecap="round"/><path d="${ridge}" stroke="#fff4dc" stroke-width="3.5" stroke-linecap="round"/>`;
+  return slab + s;
 }
 
 function panelMarkup(X, Y, o, cls = "", extra = "") {
@@ -718,7 +741,7 @@ const CAT_INNER = `
 
 function sunPos(view) {
   const P = G.P;
-  // Morning sun in the east (right, matching the E badges), evening in the west, so tree shadows fall onto the roof
+  // Morning sun in the east (right, matching the compass), evening in the west, so tree shadows fall onto the roof
   return view === 1 ? [P.W - 26, SKY - 22] : view === 4 ? [26, SKY - 22] : [P.W / 2, 32];
 }
 
@@ -814,6 +837,15 @@ function yardSign(cx, groundY) {
     <use href="#spruce-logo" x="-22" y="-32" width="44" height="14" style="color:#fff"/></g>`;
 }
 
+function compassMarkup(cx, cy) {
+  const label = (txt, x, y, col) => `<text x="${x}" y="${y}" text-anchor="middle" dominant-baseline="central" font-size="10.5" font-weight="900" fill="${col}">${txt}</text>`;
+  return `<g transform="translate(${cx},${cy})" aria-hidden="true">
+    <circle r="24" fill="#fffaf0" stroke="${INK}" stroke-width="3"/>
+    <path d="M0-8L3.2 0H-3.2Z" fill="#ee4b4b" stroke="${INK}" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M0 8L3.2 0H-3.2Z" fill="#cbbba8" stroke="${INK}" stroke-width="1.5" stroke-linejoin="round"/>
+    ${label("N", 0, -15.5, "#ee4b4b")}${label("S", 0, 15.5, INK)}${label("E", 15.5, 0, INK)}${label("W", -15.5, 0, INK)}</g>`;
+}
+
 function treeMarkup(L, P) {
   if (!L.tree) return "";
   const cx = L.tree === "left" ? P.gx - 34 : P.gx + L.w * CS + 34, top = P.gy + 4, groundY = P.gy + L.h * CS + WALL;
@@ -843,8 +875,8 @@ function buildScene() {
       <path class="drop" d="M15-13q5 7 0 9q-5-2 0-9z" fill="#7fd0ff" stroke="${INK}" stroke-width="1.6"/></g>
     ${treeMarkup(L, P)}
     ${houseMarkup(L, P)}
+    ${compassMarkup(30, P.gy + L.h * CS + WALL + 31)}
     <g id="gTiles">${tilesMarkup(L, P.gx, P.gy, "s", false)}</g>
-    <g id="gBadges">${badgesMarkup(L, P.gx, P.gy)}</g>
     <g id="gPanels"></g><g id="gShade"></g><g id="gSad"></g><g id="gCat"></g><g id="gGhost"></g><g id="gFx"></g><g id="gPigeon"></g>`;
   gEls = {};
   for (const id of ["sun", "gPanels", "gShade", "gSad", "gCat", "gGhost", "gFx", "gPigeon"]) gEls[id] = svg.querySelector("#" + id);
