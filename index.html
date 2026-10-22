@@ -137,8 +137,8 @@ button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
 .win.lit{fill:#ffe46b}
 .glow{opacity:0;transition:opacity .5s}
 .glow.lit{opacity:.85}
-.rise{animation:rise .9s ease-out forwards}
-@keyframes rise{0%{opacity:0;transform:translateY(4px)}20%{opacity:1}100%{opacity:0;transform:translateY(-26px)}}
+.spark{transform-box:fill-box;transform-origin:center;animation:spark .6s ease-out forwards;opacity:0}
+@keyframes spark{0%{opacity:0;transform:translate(0,0) scale(.3) rotate(0)}25%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1) rotate(90deg)}}
 .pigeon.bob .body{animation:bob .6s ease-in-out infinite;transform-box:fill-box;transform-origin:bottom}
 @keyframes bob{50%{transform:rotate(-8deg)}}
 
@@ -188,6 +188,8 @@ button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
   @keyframes pop{0%{transform:scale(.85)}100%{transform:scale(1)}}
   .rays,.cloud,.smoke circle,.zzz text,.pigeon.bob .body,#timer.pulse,.traypanels.picked,#doneBtn.ready{animation:none}
   .zzz text{opacity:.8}
+  .spark{animation:sparkFade .45s ease-out forwards}
+  @keyframes sparkFade{0%{opacity:0}30%{opacity:1}100%{opacity:0}}
   .star.in{animation:fadeIn .3s forwards}
   .drop{animation:fadeIn .3s both}
   @keyframes fadeIn{from{opacity:0}to{opacity:1;transform:none}}
@@ -877,9 +879,9 @@ function buildScene() {
     ${houseMarkup(L, P)}
     ${compassMarkup(30, P.gy + L.h * CS + WALL + 31)}
     <g id="gTiles">${tilesMarkup(L, P.gx, P.gy, "s", false)}</g>
-    <g id="gPanels"></g><g id="gShade"></g><g id="gSad"></g><g id="gCat"></g><g id="gGhost"></g><g id="gFx"></g><g id="gPigeon"></g>`;
+    <g id="gPanels"></g><g id="gShade"></g><g id="gCat"></g><g id="gGhost"></g><g id="gFx"></g><g id="gPigeon"></g>`;
   gEls = {};
-  for (const id of ["sun", "gPanels", "gShade", "gSad", "gCat", "gGhost", "gFx", "gPigeon"]) gEls[id] = svg.querySelector("#" + id);
+  for (const id of ["sun", "gPanels", "gShade", "gCat", "gGhost", "gFx", "gPigeon"]) gEls[id] = svg.querySelector("#" + id);
   if (L.cat) gEls.gCat.innerHTML = `<g class="cat"><g class="catbody">${CAT_INNER}</g><g class="zzz"><text x="22" y="12">z</text><text x="25" y="10">z</text><text x="28" y="8">Z</text></g></g>`;
   setView(G.view, true);
 }
@@ -904,14 +906,9 @@ function renderDynamic() {
     shade += `<rect x="${P.gx + x * CS - 4}" y="${P.gy + y * CS - 4}" width="${CS + 8}" height="${CS + 8}" rx="18" fill="${INK}"/>`;
   gEls.gShade.innerHTML = shade ? `<g filter="url(#ssoft)" opacity=".5">${shade}</g>` : "";
 
-  let sad = "", sadCount = 0;
-  for (const p of G.placed) if (p.id !== G.lifted) for (const [x, y] of cellsOf(p.x, p.y, p.o)) if (L.shade[y][x] & G.view) {
-    sadCount++;
-    sad += `<g transform="translate(${P.gx + x * CS + 20},${P.gy + y * CS + 20})"><circle r="8" fill="#cfe3ff" stroke="${INK}" stroke-width="2"/>
-      <circle cx="-2.7" cy="-1.6" r="1.3" fill="${INK}"/><circle cx="2.7" cy="-1.6" r="1.3" fill="${INK}"/>
-      <path d="M-3.2 4q3.2-3.2 6.4 0" fill="none" stroke="${INK}" stroke-width="1.7" stroke-linecap="round"/></g>`;
-  }
-  gEls.gSad.innerHTML = sad;
+  // No per-panel shade marker (it gave the puzzle away); the sun still sweats if any panel is shaded
+  let sadCount = 0;
+  for (const p of G.placed) if (p.id !== G.lifted) for (const [x, y] of cellsOf(p.x, p.y, p.o)) if (L.shade[y][x] & G.view) sadCount++;
 
   const cat = catPos();
   if (cat && !G.catAnim) gEls.gCat.firstElementChild.setAttribute("transform", `translate(${P.gx + cat[0] * CS},${P.gy + cat[1] * CS})`);
@@ -964,19 +961,26 @@ function setScore() {
   renderDynamic();
 }
 
-function floatText(cx, cy, text) {
+// Little burst of stars when a panel lands (no score number: that gave the puzzle away)
+function sparkle(cx, cy, reach) {
   const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-  g.innerHTML = `<text class="rise" x="${cx}" y="${cy}" text-anchor="middle" font-size="16" font-weight="900" fill="#fff" stroke="${INK}" stroke-width="4" paint-order="stroke">${text}</text>`;
-  gEls.gFx.appendChild(g); setTimeout(() => g.remove(), 950);
+  const star = "M0-6L1.5-1.5 6 0 1.5 1.5 0 6-1.5 1.5-6 0-1.5-1.5Z";
+  g.innerHTML = Array.from({ length: 7 }, (_, i) => {
+    const a = (i / 7) * Math.PI * 2 + Math.random() * 0.5, d = reach + Math.random() * 8;
+    const size = 0.7 + Math.random() * 0.6, col = i % 3 ? "#ffe46b" : "#fff";
+    return `<g transform="translate(${cx},${cy}) scale(${size.toFixed(2)})"><path class="spark" d="${star}" fill="${col}" stroke="${INK}" stroke-width="1.4" stroke-linejoin="round"
+      style="--dx:${(Math.cos(a) * d / size).toFixed(1)}px;--dy:${(Math.sin(a) * d / size).toFixed(1)}px;animation-delay:${(Math.random() * 0.08).toFixed(2)}s"/></g>`;
+  }).join("");
+  gEls.gFx.appendChild(g); setTimeout(() => g.remove(), 800);
 }
 
 function renderGhost(sn) {
   if (!sn) { gEls.gGhost.innerHTML = ""; return; }
   const P = G.P, X = P.gx + sn.x * CS, Y = P.gy + sn.y * CS, w = sn.o === "h" ? CS * 2 : CS, h = sn.o === "h" ? CS : CS * 2;
-  const col = sn.ok ? "#2fbf68" : "#ee4b4b", label = sn.ok ? `+${sn.v} ☀️` : REASON_LABEL[sn.reason];
+  const col = sn.ok ? "#2fbf68" : "#ee4b4b";
   gEls.gGhost.innerHTML = (sn.ok ? panelMarkup(X, Y, sn.o, "", 'opacity=".7"') : `<rect x="${X + 3}" y="${Y + 3}" width="${w - 6}" height="${h - 6}" rx="6" fill="#ee4b4b" opacity=".45"/>`) +
     `<rect x="${X + 1}" y="${Y + 1}" width="${w - 2}" height="${h - 2}" rx="8" fill="none" stroke="${col}" stroke-width="4" stroke-dasharray="${sn.ok ? "none" : "6 4"}"/>
-     <text x="${X + w / 2}" y="${Y - 7}" text-anchor="middle" font-size="14" font-weight="900" fill="#fff" stroke="${col}" stroke-width="4" paint-order="stroke">${label}</text>`;
+     ${sn.ok ? "" : `<text x="${X + w / 2}" y="${Y - 7}" text-anchor="middle" font-size="14" font-weight="900" fill="#fff" stroke="${col}" stroke-width="4" paint-order="stroke">${REASON_LABEL[sn.reason]}</text>`}`;
 }
 
 /* ---------- placement actions ---------- */
@@ -986,8 +990,12 @@ function place(sn) {
   G.justPlaced = id;
   sfx.clink();
   setScore();
-  const P = G.P, w = sn.o === "h" ? 2 : 1;
-  floatText(P.gx + (sn.x + w / 2) * CS, P.gy + sn.y * CS - 4, `+${sn.v}`);
+  sparklePanel(sn);
+}
+
+function sparklePanel(p) {
+  const P = G.P, w = p.o === "h" ? 2 : 1, h = p.o === "h" ? 1 : 2;
+  sparkle(P.gx + (p.x + w / 2) * CS, P.gy + (p.y + h / 2) * CS, CS * 0.9);
 }
 
 function rotatePanel(id) {
@@ -995,7 +1003,7 @@ function rotatePanel(id) {
   const sn = check(p.x, p.y, p.o === "h" ? "v" : "h", id);
   const el = gEls.gPanels.querySelector(`[data-id="${id}"] .pin`);
   if (!sn.ok) return deny(sn.reason, el);
-  p.o = sn.o; G.justPlaced = id; sfx.rotate(); setScore();
+  p.o = sn.o; G.justPlaced = id; sfx.rotate(); setScore(); sparklePanel(p);
 }
 
 function removePanel(id) {
@@ -1106,6 +1114,7 @@ function endDrag() {
     if (!sn) removePanel(d.id);
     else if (sn.ok) {
       if (sn.x !== p.x || sn.y !== p.y) { p.x = sn.x; p.y = sn.y; G.justPlaced = p.id; sfx.clink(); setScore(); } else renderDynamic();
+      sparklePanel(p);
     } else { renderDynamic(); deny(sn.reason, gEls.gPanels.querySelector(`[data-id="${d.id}"] .pin`)); }
   }
 }
