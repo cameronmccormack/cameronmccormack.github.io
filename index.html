@@ -718,7 +718,8 @@ const CAT_INNER = `
 
 function sunPos(view) {
   const P = G.P;
-  return view === 1 ? [26, SKY - 22] : view === 4 ? [P.W - 26, SKY - 22] : [P.W / 2, 32];
+  // Morning sun in the east (right, matching the E badges), evening in the west, so tree shadows fall onto the roof
+  return view === 1 ? [P.W - 26, SKY - 22] : view === 4 ? [26, SKY - 22] : [P.W / 2, 32];
 }
 
 /* ---------- state ---------- */
