@@ -32,7 +32,13 @@ button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
 .iconbtn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--ink)}
 
 /* ---------- title ---------- */
-#title{align-items:center;justify-content:center;padding:16px;text-align:center;overflow-y:auto}
+#title{align-items:center;padding:16px 16px 14px;text-align:center;overflow-y:auto;isolation:isolate}
+.title-brand{display:block;margin:auto auto 10px;color:var(--spruce);line-height:0}
+.title-brand svg{width:clamp(150px,48vw,190px);height:auto;aspect-ratio:785/163;display:block}
+.forest{position:absolute;left:0;right:0;bottom:0;height:128px;z-index:-1;pointer-events:none;color:var(--lime);opacity:.5;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.forest svg{width:100%;height:100%;display:block}
+.btn.spruce{background:var(--spruce);color:#fff}
+.btn.spruce small{color:var(--lime);opacity:1}
 #muteBtn{position:absolute;top:12px;right:12px}
 .brandbadge{position:absolute;top:12px;left:12px;background:var(--spruce)}
 .brandbadge svg{width:15px;height:21px;color:#fff}
@@ -41,7 +47,7 @@ button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
 .res-brand svg{width:78px;height:17px}
 .howby{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px;font-size:12px;font-weight:700;color:var(--muted)}
 .howby svg{width:62px;height:13px;color:var(--spruce)}
-.title-art{width:min(250px,64vw);height:auto;display:block;margin:0 auto -6px}
+.title-art{width:min(236px,60vw);height:auto;display:block;margin:0 auto 6px}
 .logo{margin:0;font-size:clamp(40px,12vw,58px);line-height:.92;font-weight:900;letter-spacing:-1px;color:#fff;
   -webkit-text-stroke:3px var(--ink);paint-order:stroke fill;text-shadow:0 5px 0 var(--ink)}
 .logo span{display:block}
@@ -56,8 +62,9 @@ button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
 .chip{border:2.5px solid var(--ink);border-radius:10px;background:#fff;padding:4px 7px;font-size:12px;font-weight:800;line-height:1.1;min-width:52px}
 .chip span{display:block;font-size:11px;letter-spacing:-1px}
 .chip.next{background:#fff3b0}
-.by{position:absolute;bottom:10px;left:0;right:0;font-size:12px;color:var(--muted);font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none}
-.by svg{width:66px;height:14px;color:var(--spruce);margin-top:1px}
+.by{margin-top:auto;display:inline-flex;align-items:center;gap:8px;background:var(--spruce);color:#fff;border:2.5px solid var(--ink);border-radius:999px;padding:7px 14px 7px 10px;font-size:13px;font-weight:800;white-space:nowrap;text-decoration:none;box-shadow:0 3px 0 var(--ink);text-align:left}
+.by svg{width:12px;height:17px;color:var(--lime);flex:none}
+.title-btns + .link{margin-bottom:14px}
 
 /* ---------- play ---------- */
 .hud{display:flex;align-items:center;gap:8px;padding:10px 12px 6px}
@@ -182,7 +189,8 @@ button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
 #toast.show{opacity:1;transform:translate(-50%,0)}
 #confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
 
-@media (max-height:600px){ .title-art{width:170px} .pitch{margin:8px auto} }
+@media (max-height:700px){ .title-art{width:172px} .pitch{margin:10px auto 12px} .title-btns{gap:10px} }
+@media (max-height:600px){ .title-art{width:150px} .pitch{margin:8px auto} }
 @media (prefers-reduced-motion:reduce){
   .pin.pop{animation:pop .2s ease-out}
   @keyframes pop{0%{transform:scale(.85)}100%{transform:scale(1)}}
@@ -209,6 +217,7 @@ button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
   <section id="title" class="screen active">
     <a id="brandBadge" class="iconbtn brandbadge brandlink" target="_blank" rel="noopener"><svg class="product" role="img" viewBox="0 0 757.6 1032"><use href="#spruce-tree"/></svg></a>
     <button id="muteBtn" class="iconbtn" aria-label="Toggle sound">🔊</button>
+    <a class="title-brand brandlink" target="_blank" rel="noopener"><svg class="product" role="img" viewBox="0 0 785 163"><use href="#spruce-logo"/></svg></a>
     <svg class="title-art" viewBox="0 0 260 175" aria-hidden="true">
       <g style="transform:translate(205px,42px)"><g class="rays">
         <g stroke="#2b2140" stroke-width="4" stroke-linecap="round"><path d="M0-34v-8M0 34v8M-34 0h-8M34 0h8M24-24l6-6M-24 24l-6 6M24 24l6 6M-24-24l-6-6"/></g></g>
@@ -236,11 +245,12 @@ button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
     <div class="title-btns">
       <button id="playDaily" class="btn">Play today's roof<small id="dailyLabel"></small></button>
       <div id="dailyStatus" class="status"></div>
-      <button id="playPractice" class="btn white">Practice<small id="practiceLabel"></small></button>
+      <button id="playPractice" class="btn spruce">Practice<small id="practiceLabel"></small></button>
       <div id="chips" class="chips"></div>
     </div>
     <button id="howBtn" class="link">How to play</button>
-    <a class="by brandlink" target="_blank" rel="noopener">A tiny sunny game by <svg class="product" role="img" viewBox="0 0 785 163"><use href="#spruce-logo"/></svg></a>
+    <a class="by brandlink" target="_blank" rel="noopener"><svg aria-hidden="true" viewBox="0 0 757.6 1032"><use href="#spruce-tree"/></svg><span id="byText"></span></a>
+    <div class="forest" aria-hidden="true"><svg viewBox="0 0 420 96" preserveAspectRatio="xMidYMax slice"><use href="#spruce-tree" x="0" y="46" width="36.7" height="50"/><use href="#spruce-tree" x="26" y="26" width="51.4" height="70"/><use href="#spruce-tree" x="62" y="54" width="30.8" height="42"/><use href="#spruce-tree" x="90" y="36" width="44.0" height="60"/><use href="#spruce-tree" x="128" y="58" width="27.9" height="38"/><use href="#spruce-tree" x="156" y="40" width="41.1" height="56"/><use href="#spruce-tree" x="196" y="50" width="33.8" height="46"/><use href="#spruce-tree" x="226" y="24" width="52.8" height="72"/><use href="#spruce-tree" x="266" y="56" width="29.4" height="40"/><use href="#spruce-tree" x="294" y="38" width="42.6" height="58"/><use href="#spruce-tree" x="334" y="48" width="35.2" height="48"/><use href="#spruce-tree" x="362" y="30" width="48.4" height="66"/><use href="#spruce-tree" x="398" y="52" width="32.3" height="44"/></svg></div>
   </section>
 
   <!-- PLAY -->
@@ -359,6 +369,7 @@ button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
 const CONFIG = {
   productName: "Spruce",
   ctaText: "Designing real roofs? Spruce makes it this easy →",
+  ctaShort: "Designing real roofs? Meet Spruce →", // title-screen pill
   ctaUrl: "https://www.spruce.eco/",
   gameUrl: "https://cameronmccormack.github.io/",
   roundSeconds: 60,
@@ -1401,6 +1412,7 @@ document.querySelectorAll(".product").forEach(el => el.setAttribute("aria-label"
 document.querySelectorAll(".brandlink").forEach(a => (a.href = CONFIG.ctaUrl));
 $("#pitch").textContent = `Pack the sunniest roof you can in ${CONFIG.roundSeconds} seconds. Can you match the perfect layout?`;
 $("#ctaText").textContent = CONFIG.ctaText;
+$("#byText").textContent = CONFIG.ctaShort;
 $("#cta").href = CONFIG.ctaUrl;
 refreshTitle();
 
