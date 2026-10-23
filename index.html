@@ -373,6 +373,7 @@ const CONFIG = {
   ctaUrl: "https://www.spruce.eco/",
   gameUrl: "https://cameronmccormack.github.io/",
   roundSeconds: 60,
+  dailyLevel: "Monster House", // demo: always use this level for the daily roof; set to null to rotate by date
 };
 
 // #region core — levels, scoring & solver (pure JS, no DOM; also loaded by the Node test harness)
@@ -634,7 +635,8 @@ const keyOf = (x, y) => x + "," + y;
 function dailyInfo(d = new Date()) {
   const days = Math.floor((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(2026, 0, 1)) / 864e5);
   const pad = n => String(n).padStart(2, "0");
-  return { num: days + 1, idx: ((days % LV.length) + LV.length) % LV.length, key: `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}` };
+  const pinned = LV.findIndex(L => L.name === CONFIG.dailyLevel);
+  return { num: days + 1, idx: pinned >= 0 ? pinned : ((days % LV.length) + LV.length) % LV.length, key: `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}` };
 }
 
 /* ---------- SVG art ---------- */
